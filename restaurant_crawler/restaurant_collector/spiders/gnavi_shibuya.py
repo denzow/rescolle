@@ -13,9 +13,9 @@ from ..geo_repository import GeoRepository
 GNAVI_API_LIMIT = 1000
 
 
-class GnaviSpider(scrapy.Spider):
+class GnaviShibuyaSpider(scrapy.Spider):
 
-    name = 'gnavi'
+    name = 'gnavi_shibuya'
     allowed_domains = ['api.gnavi.co.jp']
 
     def __init__(self, *args, **kwargs):
@@ -140,10 +140,11 @@ class GnaviSpider(scrapy.Spider):
 
             # 結果をItemPipelineに流す
             for rest in result['rest']:
-                self.logger.debug('{} {} {}'.format(rest['name'], rest['latitude'], rest['longitude']))
                 yield rest
 
             # まだ全件戻ってないならOffsetをずらして続ける
             if hit_per_page * page_offset < total_hit_count:
                 search_pattern['offset_page'] += 1
                 yield self._get_request(**search_pattern, callback_parser=self.parse)
+
+

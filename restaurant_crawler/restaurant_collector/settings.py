@@ -4,6 +4,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+LOG_LEVEL = 'ERROR'
+
 # Scrapy settings for restaurant_collector project
 #
 # For simplicity, this file contains only settings considered important or
@@ -68,9 +70,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'restaurant_collector.pipelines.RestaurantCollectorPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'restaurant_collector.pipelines.RestaurantCollectorPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -96,3 +98,5 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # custom settings
 GNAVI_AREA_JSON_PATH = os.path.join(BASE_DIR, 'restaurant_collector', 'gnavi_area.json')
+
+GNAVI_RESTAURANT_OUTPUT_DATA_DIR = os.path.join(BASE_DIR, '..')

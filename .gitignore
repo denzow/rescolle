@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-all_shibuya.json
+gnavi_shibuya.json
 
 # C extensions
 *.so
