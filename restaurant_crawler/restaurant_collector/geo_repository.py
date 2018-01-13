@@ -5,19 +5,18 @@ import json
 
 class SmallArea:
 
-    def __init__(self, small_area_name, small_area_code, middle_area_name,
-                 middle_area_code, large_area_code, large_area_name, pref_name, pref_code):
-        self.small_area_name = small_area_name
-        self.small_area_code = small_area_code
-        self.middle_area_name = middle_area_name
-        self.middle_area_code = middle_area_code
-        self.large_area_name = large_area_name
-        self.large_area_code = large_area_code
+    def __init__(self, areaname_s, areacode_s, areaname_m, areacode_m, areaname_l, areacode_l, pref_name, pref_code):
+        self.areaname_s = areaname_s
+        self.areacode_s = areacode_s
+        self.areaname_m = areaname_m
+        self.areacode_m = areacode_m
+        self.areaname_l = areaname_l
+        self.areacode_l = areacode_l
         self.pref_name = pref_name
         self.pref_code = pref_code
 
     def __str__(self):
-        return '{}({}:{})'.format(self.__class__.__name__, self.small_area_code, self.small_area_name)
+        return '{}({}:{})'.format(self.__class__.__name__, self.areacode_s, self.areaname_s)
 
     def __repr__(self):
         return self.__str__()
@@ -80,12 +79,12 @@ class GeoRepository:
         area_list = []
         for area_dict in small_area_list:
             small_area = SmallArea(
-                small_area_name=area_dict['areaname_s'],
-                small_area_code=area_dict['areacode_s'],
-                middle_area_name=area_dict['garea_middle']['areaname_m'],
-                middle_area_code=area_dict['garea_middle']['areacode_m'],
-                large_area_name=area_dict['garea_large']['areaname_l'],
-                large_area_code=area_dict['garea_large']['areacode_l'],
+                areaname_s=area_dict['areaname_s'],
+                areacode_s=area_dict['areacode_s'],
+                areaname_m=area_dict['garea_middle']['areaname_m'],
+                areacode_m=area_dict['garea_middle']['areacode_m'],
+                areaname_l=area_dict['garea_large']['areaname_l'],
+                areacode_l=area_dict['garea_large']['areacode_l'],
                 pref_name=area_dict['pref']['pref_name'],
                 pref_code=area_dict['pref']['pref_code'],
             )
@@ -93,9 +92,10 @@ class GeoRepository:
 
         return area_list
 
-    def search(self, **kwargs):
+    def search(self, select, **kwargs):
         """
         全部or条件
+        :param select: SELECT句
         :param kwargs: 検索条件のペア
         :return:
         """
@@ -103,13 +103,14 @@ class GeoRepository:
         for k, v in kwargs.items():
             for area in self._small_area_list:
                 if area.is_match(k, v):
-                    result_set.append(area)
-        return result_set
+                    result_set.append(area[select])
+        return list(set(result_set))
 
 
 if __name__ == '__main__':
 
     with open('./gnavi_area.json') as f:
         repo = GeoRepository(f.read())
-        print(repo.search(middle_area_name='渋谷'))
+        print(repo.search('pref_name', areaname_m='渋谷'))
+        print(repo.search('areaname_s', areaname_m='渋谷'))
 

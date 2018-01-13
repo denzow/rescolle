@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Scrapy settings for restaurant_collector project
 #
 # For simplicity, this file contains only settings considered important or
@@ -88,3 +92,7 @@ HTTPCACHE_EXPIRATION_SECS = 0
 HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+# custom settings
+GNAVI_AREA_JSON_PATH = os.path.join(BASE_DIR, 'restaurant_collector', 'gnavi_area.json')
