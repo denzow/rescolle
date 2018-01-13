@@ -26,6 +26,20 @@
             center: {lat: 35.658581, lng: 139.745433},
             zoom: 14
         });
+        var maker = new google.maps.Marker({
+            position: {
+                "lat": 35.658581,
+                "lng": 139.745433
+            },
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: 'とうきょうたわー',
+        });
+
+        google.maps.event.addListener(maker, 'click', function(e){
+            console.log(e, this);
+            alert(this.title);
+        });
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
