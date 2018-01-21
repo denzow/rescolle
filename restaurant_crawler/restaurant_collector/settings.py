@@ -100,3 +100,5 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 GNAVI_AREA_JSON_PATH = os.path.join(BASE_DIR, 'restaurant_collector', 'gnavi_area.json')
 
 GNAVI_RESTAURANT_OUTPUT_DATA_DIR = os.path.join(BASE_DIR, '..')
+
+RESCOLLE_DB_PATH = os.path.join(BASE_DIR, '..', 'rescolle.db')

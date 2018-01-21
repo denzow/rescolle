@@ -2,6 +2,7 @@
 
 import os
 import json
+from .db_helper import Restaurant
 
 
 class RestaurantCollectorPipeline(object):
@@ -24,8 +25,13 @@ class RestaurantCollectorPipeline(object):
         pass
 
     def close_spider(self, spider):
+
+        # 生データの保存
         with open(os.path.join(self.output_base_dir, '{}.json'.format(spider.name)), 'w') as f:
             json.dump(self.tmp_item_list, f, indent=4, ensure_ascii=False)
+
+        for data in self.tmp_item_list:
+            print(Restaurant.create_by_dict(data))
 
     def process_item(self, item, spider):
 

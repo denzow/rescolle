@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 gnavi_shibuya.json
+*.db
 
 # C extensions
 *.so
