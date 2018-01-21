@@ -117,10 +117,8 @@ class GnaviShibuyaSpider(scrapy.Spider):
         if total_hit_count > GNAVI_API_LIMIT:
             one_point_down_code_type = self._get_lower_area_code_type(search_pattern['area_code_type'], 1)
 
-            # TODO もうちょいまともな構造にしたい
             # エリアリポジトリからもともとのエリアを細分化した小エリアを取得する
-            area_json = self.settings.get('GNAVI_AREA_JSON_PATH')
-            sub_area_code_list = GeoRepository(open(area_json).read()).search(**{
+            sub_area_code_list = GeoRepository().search(**{
                 'select': one_point_down_code_type,
                 search_pattern['area_code_type']: search_pattern['area_code']
             })

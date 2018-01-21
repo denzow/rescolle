@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import json
-
+from scrapy.utils.project import get_project_settings
 
 class SmallArea:
 
@@ -36,7 +36,7 @@ class SmallArea:
 
 class GeoRepository:
 
-    def __init__(self, json_data):
+    def __init__(self):
         """
 
         :param str json_data:
@@ -65,7 +65,9 @@ class GeoRepository:
                 },
         :
         """
-        self._raw_data = json.loads(json_data)
+        geo_file_path = get_project_settings().get('GNAVI_AREA_JSON_PATH')
+        with open(geo_file_path) as f:
+            self._raw_data = json.loads(f.read())
         self._small_area_list = self._prepare_repository()
 
     def _prepare_repository(self):

@@ -36,9 +36,12 @@
             title: 'とうきょうたわー',
         });
 
-        google.maps.event.addListener(maker, 'click', function(e){
+        maker.addListener('click', function(e){
             console.log(e, this);
-            alert(this.title);
+            var infoWindow = new google.maps.InfoWindow({
+                content: this.title
+            });
+            infoWindow.open(map, this);
         });
     }
 </script>

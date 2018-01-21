@@ -13,7 +13,6 @@ class RestaurantCollectorPipeline(object):
     @classmethod
     def from_crawler(cls, crawler):
         """
-
         :param crawler:
         :return:
         """
@@ -32,4 +31,4 @@ class RestaurantCollectorPipeline(object):
 
         # print('{} {} {}'.format(item['name'], item['latitude'], item['longitude']))
         self.tmp_item_list.append(item)
-        return {}
+        return item
