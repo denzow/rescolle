@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import os
-
+import sys
+import django
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+APP_ROOT_DIR = os.path.join(BASE_DIR, '..')
+sys.path.append(APP_ROOT_DIR)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'rescolle.settings'
+
+django.setup()
 
 LOG_LEVEL = 'ERROR'
 
@@ -15,10 +22,10 @@ LOG_LEVEL = 'ERROR'
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'restaurant_collector'
+BOT_NAME = 'rescolle_crawler'
 
-SPIDER_MODULES = ['restaurant_collector.spiders']
-NEWSPIDER_MODULE = 'restaurant_collector.spiders'
+SPIDER_MODULES = ['rescolle_crawler.spiders']
+NEWSPIDER_MODULE = 'rescolle_crawler.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -71,7 +78,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'restaurant_collector.pipelines.RestaurantCollectorPipeline': 300,
+    'rescolle_crawler.pipelines.RestaurantCollectorPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -97,8 +104,9 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 
 # custom settings
-GNAVI_AREA_JSON_PATH = os.path.join(BASE_DIR, 'restaurant_collector', 'gnavi_area.json')
+GNAVI_AREA_JSON_PATH = os.path.join(BASE_DIR, 'rescolle_crawler', 'gnavi_area.json')
 
 GNAVI_RESTAURANT_OUTPUT_DATA_DIR = os.path.join(BASE_DIR, '..')
 
 RESCOLLE_DB_PATH = os.path.join(BASE_DIR, '..', 'rescolle.db')
+

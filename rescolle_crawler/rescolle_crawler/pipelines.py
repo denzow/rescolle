@@ -2,8 +2,8 @@
 
 import os
 import json
-from .db_helper import Restaurant
 
+from .items import RestaurantItem
 
 class RestaurantCollectorPipeline(object):
 
@@ -31,7 +31,9 @@ class RestaurantCollectorPipeline(object):
             json.dump(self.tmp_item_list, f, indent=4, ensure_ascii=False)
 
         for data in self.tmp_item_list:
-            print(Restaurant.create_by_dict(data))
+            restaurant = RestaurantItem.create_by_dict(data)
+            print(restaurant)
+            restaurant.save()
 
     def process_item(self, item, spider):
 
