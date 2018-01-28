@@ -3,6 +3,7 @@
 import json
 from scrapy.utils.project import get_project_settings
 
+
 class SmallArea:
 
     def __init__(self, areaname_s, areacode_s, areaname_m, areacode_m, areaname_l, areacode_l, pref_name, pref_code):
