@@ -35,3 +35,7 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return 'Restaurant({}, {})'.format(self.restaurant_id, self.name)
+
+    @classmethod
+    def get_all_list(cls):
+        return list(cls.objects.all())

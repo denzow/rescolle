@@ -44,6 +44,25 @@
             infoWindow.open(map, this);
         });
     }
+
+    fetch('/app/get_coordinate_list')
+        .then(res => {
+            return res.json()
+        })
+        .then(json => {
+            console.log(json);
+            for(let rest of json['result']){
+                let maker = new google.maps.Marker({
+                    position: {
+                        "lat": rest['latitude'],
+                        "lng": rest['longitude'],
+                    },
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: rest['name'],
+                });
+            }
+        })
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
 </body>
