@@ -45,9 +45,13 @@ class RestaurantItem(DjangoItem):
         }
         instance = cls(**parsed_data)
         if not instance['latitude']:
-            instance['latitude'] = 10.0
+            instance['latitude'] = -1
+        else:
+            instance['latitude'] = float(instance['latitude']) + 0.00324
         if not instance['longitude']:
-            instance['longitude'] = 10.0
+            instance['longitude'] = -1
+        else:
+            instance['longitude'] = float(instance['longitude']) - 0.0032
 
         for key in instance.keys():
             if not instance[key]:

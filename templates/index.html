@@ -18,51 +18,62 @@
     </style>
 </head>
 <body>
+
+<input type="text" id="keyword" /><input type="button" id="research" value="絞込" />
 <div id="map"></div>
 <script>
-    var map;
+    let map;
+    let makerArray = [];
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 35.658581, lng: 139.745433},
             zoom: 14
         });
-        var maker = new google.maps.Marker({
-            position: {
-                "lat": 35.658581,
-                "lng": 139.745433
-            },
-            map: map,
-            animation: google.maps.Animation.DROP,
-            title: 'とうきょうたわー',
-        });
-
-        maker.addListener('click', function(e){
-            console.log(e, this);
-            var infoWindow = new google.maps.InfoWindow({
-                content: this.title
-            });
-            infoWindow.open(map, this);
-        });
     }
 
-    fetch('/app/get_coordinate_list')
-        .then(res => {
-            return res.json()
+    function getRestaurantPoints(keyWord) {
+        makerArray.forEach(function (marker, idx) { marker.setMap(null); });
+        makerArray = [];
+
+        fetch('/app/get_coordinate_list?keyword=' + keyWord, {
+            method: 'GET',
+            mode: 'same-origin',
+            credentials: 'include'
         })
-        .then(json => {
-            console.log(json);
-            for(let rest of json['result']){
-                let maker = new google.maps.Marker({
-                    position: {
-                        "lat": rest['latitude'],
-                        "lng": rest['longitude'],
-                    },
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    title: rest['name'],
-                });
-            }
-        })
+            .then(res => {
+                return res.json();
+            })
+            .then(json => {
+                console.log(json);
+                let center = json['center'];
+
+                map.panTo(new google.maps.LatLng(center['latitude'], center['longitude']));
+
+                for (let rest of json['restaurants']) {
+                    let maker = new google.maps.Marker({
+                        position: {
+                            "lat": rest['latitude'],
+                            "lng": rest['longitude'],
+                        },
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        title: rest['name'],
+                    });
+                    maker.addListener('click', function (e) {
+                        let infoWindow = new google.maps.InfoWindow({
+                            content: this.title
+                        });
+                        infoWindow.open(map, this);
+                    });
+                    makerArray.push(maker);
+                }
+            })
+    }
+
+    document.querySelector('#research').addEventListener('click', function(e){
+        let keyWord = document.querySelector('#keyword').value;
+        getRestaurantPoints(keyWord);
+    }, false);
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
 </body>

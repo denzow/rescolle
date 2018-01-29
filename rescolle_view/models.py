@@ -39,3 +39,11 @@ class Restaurant(models.Model):
     @classmethod
     def get_all_list(cls):
         return list(cls.objects.all())
+
+    @classmethod
+    def get_all_valid_list(cls):
+        return list(cls.objects.exclude(latitude=-1, longitude=-1))
+
+    @classmethod
+    def get_list_by_keyword(cls, keyword):
+        return list(cls.objects.filter(pr_long__contains=keyword))
