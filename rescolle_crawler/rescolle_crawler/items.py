@@ -47,11 +47,17 @@ class RestaurantItem(DjangoItem):
         if not instance['latitude']:
             instance['latitude'] = -1
         else:
-            instance['latitude'] = float(instance['latitude']) + 0.00324
+            # 以下を参考に座標を修正
+            # http://oitake.jugem.jp/?eid=153
+            latitude = float(instance['latitude'])
+            longitude = float(instance['longitude'])
+            instance['latitude'] = latitude - latitude * 0.00010695 + longitude * 0.000017464 + 0.0046017
         if not instance['longitude']:
             instance['longitude'] = -1
         else:
-            instance['longitude'] = float(instance['longitude']) - 0.0032
+            latitude = float(instance['latitude'])
+            longitude = float(instance['longitude'])
+            instance['longitude'] = longitude - latitude * 0.000046038 - longitude * 0.000083043 + 0.010040
 
         for key in instance.keys():
             if not instance[key]:
