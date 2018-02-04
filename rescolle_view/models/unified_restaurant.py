@@ -1,0 +1,20 @@
+from django.db import models
+from .gnavi_restaurant import GnaviRestaurant
+
+
+class UnifiedRestaurant(models.Model):
+
+    name = models.CharField(max_length=200, null=False, blank=False)
+    name_kana = models.CharField(max_length=200, null=False, blank=False)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    address = models.CharField(max_length=200, null=False, blank=False)
+    tel = models.CharField(max_length=200, null=False, blank=False)
+    gnavi_restaurant = models.ForeignKey(GnaviRestaurant, on_delete=models.SET_NULL, null=True)
+
+    @classmethod
+    def get_by_gnavi_restaurant(cls, gnavi_restaurant):
+        try:
+            return cls.objects.get(gnavi_restaurant=gnavi_restaurant)
+        except cls.DoesNotExist:
+            return None

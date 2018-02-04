@@ -88,7 +88,7 @@ def _generate_gnavi_restaurant(raw_dict_list: list):
         }
 
         if not parsed_data['latitude']:
-            parsed_data['latitude'] = -1
+            parsed_data['latitude'] = None
         else:
             # 以下を参考に座標を修正
             # http://oitake.jugem.jp/?eid=153
@@ -96,7 +96,7 @@ def _generate_gnavi_restaurant(raw_dict_list: list):
             longitude = float(parsed_data['longitude'])
             parsed_data['latitude'] = latitude - latitude * 0.00010695 + longitude * 0.000017464 + 0.0046017
         if not parsed_data['longitude']:
-            parsed_data['longitude'] = -1
+            parsed_data['longitude'] = None
         else:
             latitude = float(parsed_data['latitude'])
             longitude = float(parsed_data['longitude'])
