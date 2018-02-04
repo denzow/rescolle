@@ -10,10 +10,26 @@ class CrawlRawData(models.Model):
     raw_json = models.TextField()
     source = models.IntegerField()
     crawled_at = models.DateTimeField(auto_now_add=True)
+    serial = models.TextField(blank=True, null=True, unique=True)
+
+    @classmethod
+    def get_by_serial(cls, serial):
+        try:
+            return cls.objects.get(serial=serial)
+        except cls.DoesNotExist:
+            return None
 
     @property
     def json(self):
         return json.loads(self.raw_json)
+
+    @property
+    def source_type(self):
+        return SourceType(self.source)
+
+    def clear_serial(self):
+        self.serial = None
+        self.save()
 
 
 class GnaviRestaurant(models.Model):
@@ -47,6 +63,13 @@ class GnaviRestaurant(models.Model):
         return 'Restaurant({}, {})'.format(self.restaurant_id, self.name)
 
     @classmethod
+    def get_by_restaurant_id(cls, restaurant_id):
+        try:
+            return cls.objects.get(restaurant_id=restaurant_id)
+        except cls.DoesNotExist:
+            return None
+
+    @classmethod
     def get_all_list(cls):
         return list(cls.objects.all())
 
@@ -57,3 +80,7 @@ class GnaviRestaurant(models.Model):
     @classmethod
     def get_list_by_keyword(cls, keyword):
         return list(cls.objects.filter(pr_long__contains=keyword))
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
