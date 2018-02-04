@@ -1,10 +1,24 @@
+
+import json
+
 from django.db import models
 from .constraints import SourceType
 
 
-class Restaurant(models.Model):
+class CrawlRawData(models.Model):
 
-    restaurant_id = models.CharField(max_length=200, null=False, blank=False)
+    raw_json = models.TextField()
+    source = models.IntegerField()
+    crawled_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def json(self):
+        return json.loads(self.raw_json)
+
+
+class GnaviRestaurant(models.Model):
+
+    restaurant_id = models.CharField(max_length=200, null=False, blank=False, unique=True)
     name = models.CharField(max_length=200, null=False, blank=False)
     name_kana = models.CharField(max_length=200, null=False, blank=False)
     latitude = models.FloatField()
@@ -28,10 +42,6 @@ class Restaurant(models.Model):
     budget = models.CharField(max_length=300, null=True, blank=True)
     party = models.CharField(max_length=300, null=True, blank=True)
     lunch = models.CharField(max_length=300, null=True, blank=True)
-    source_type = models.IntegerField(choices=SourceType.choices())
-
-    class Meta:
-        unique_together = ('restaurant_id', 'source_type')
 
     def __str__(self):
         return 'Restaurant({}, {})'.format(self.restaurant_id, self.name)

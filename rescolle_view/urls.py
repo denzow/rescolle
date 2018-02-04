@@ -5,4 +5,5 @@ urlpatterns = [
     path('', index),
     path('index', index),
     path('get_coordinate_list', get_coordinate_list),
+
 ]

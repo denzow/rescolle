@@ -5,14 +5,28 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
+import json
+
 from scrapy_djangoitem import DjangoItem
 
-from rescolle_view.models import Restaurant
 from rescolle_view.constraints import SourceType
+from rescolle_view.models import GnaviRestaurant, CrawlRawData
+
+
+class CrawlJsonItem(DjangoItem):
+
+    django_model = CrawlRawData
+
+    @classmethod
+    def create(cls, raw_dict_list: list):
+        instance = cls()
+        instance['raw_json'] = json.dumps(raw_dict_list)
+        instance['source'] = SourceType.GNABI.value
+        return instance
 
 
 class RestaurantItem(DjangoItem):
-    django_model = Restaurant
+    django_model = GnaviRestaurant
 
     @classmethod
     def create_by_dict(cls, raw_dict):
@@ -63,5 +77,4 @@ class RestaurantItem(DjangoItem):
             if not instance[key]:
                 instance[key] = ''
 
-        instance['source_type'] = SourceType.GNABI.value
         return instance

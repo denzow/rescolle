@@ -2,18 +2,19 @@
 
 from statistics import mean
 
-from .models import Restaurant
+from .models import GnaviRestaurant
 
 
 def get_restaurant_coordinate_list_by_keyword(keyword: str):
-    restaurant_list = Restaurant.get_list_by_keyword(keyword)
+    restaurant_list = GnaviRestaurant.get_list_by_keyword(keyword)
     return [
         {'id': x.id, 'latitude': x.latitude, 'longitude': x.longitude, 'name': x.name}
         for x in restaurant_list
     ]
 
+
 def get_all_restaurant_coordinate_list():
-    all_restaurant_list = Restaurant.get_all_valid_list()
+    all_restaurant_list = GnaviRestaurant.get_all_valid_list()
     return [
         {'id': x.id, 'latitude': x.latitude, 'longitude': x.longitude, 'name': x.name}
         for x in all_restaurant_list

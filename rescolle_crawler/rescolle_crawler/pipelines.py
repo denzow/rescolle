@@ -3,7 +3,8 @@
 import os
 import json
 
-from .items import RestaurantItem
+from .items import CrawlJsonItem
+
 
 class RestaurantCollectorPipeline(object):
 
@@ -25,15 +26,15 @@ class RestaurantCollectorPipeline(object):
         pass
 
     def close_spider(self, spider):
+        crawl_json_item = CrawlJsonItem.create(self.tmp_item_list)
+        crawl_json_item.save()
 
         # 生データの保存
         with open(os.path.join(self.output_base_dir, '{}.json'.format(spider.name)), 'w') as f:
             json.dump(self.tmp_item_list, f, indent=4, ensure_ascii=False)
 
-        for data in self.tmp_item_list:
-            restaurant = RestaurantItem.create_by_dict(data)
-            print(restaurant)
-            restaurant.save()
+
+
 
     def process_item(self, item, spider):
 
