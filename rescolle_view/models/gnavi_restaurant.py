@@ -6,8 +6,8 @@ class GnaviRestaurant(models.Model):
     restaurant_id = models.CharField(max_length=200, null=False, blank=False, unique=True)
     name = models.CharField(max_length=200, null=False, blank=False)
     name_kana = models.CharField(max_length=200, null=False, blank=False)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
     category = models.CharField(max_length=200, null=False, blank=False)
     url = models.URLField()
     url_mobile = models.URLField()
@@ -29,7 +29,7 @@ class GnaviRestaurant(models.Model):
     lunch = models.CharField(max_length=300, null=True, blank=True)
 
     def __str__(self):
-        return 'Restaurant({}, {})'.format(self.restaurant_id, self.name)
+        return 'GnaviRestaurant({}: {}, {})'.format(self.id, self.restaurant_id, self.name)
 
     @classmethod
     def get_by_restaurant_id(cls, restaurant_id):

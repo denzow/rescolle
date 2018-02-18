@@ -7,6 +7,15 @@ from ..constraints import SourceType
 from ..exceptions import RescolleExceptions
 
 
+def get_unifier(source_type: SourceType):
+
+    unifier_map = {
+        source_type.GNAVI: GnaviUnifier
+    }
+
+    return unifier_map[source_type]
+
+
 class UnifyExceptions(RescolleExceptions):
     """
     unify時の例外
@@ -51,7 +60,7 @@ class Unifier(abc.ABC):
 
         return unify_target
 
-    def _get_unified_restaurant(self, unify_target):
+    def _get_or_create_unified_restaurant(self, unify_target):
         """
         すでに紐付いているUnifiedRestaurantがあれば戻す。
         なければ生成して戻す
@@ -62,8 +71,9 @@ class Unifier(abc.ABC):
         ur_list = []
         for source_type, target in unify_target.items():
             ur = None
-            if source_type.is_gnavi:
+            if source_type.is_gnavi():
                 ur = UnifiedRestaurant.get_by_gnavi_restaurant(gnavi_restaurant=target)
+            # TODO 増える
             else:
                 pass
             if ur:
@@ -83,10 +93,16 @@ class Unifier(abc.ABC):
         複数のソースを統合する
         :return:
         """
+        # unify可能なサブレストランを取得する
+        # source_typeをキーとしてサブレストランをValueに持つ
         unify_target = self._get_unify_target()
-        # 起点を候補に加える
+        # 起点となるレストランを候補に加える
         unify_target[self.source_type] = self.source_object
-        target_unified_restaurant = self._get_unified_restaurant(unify_target)
+
+        target_unified_restaurant = self._get_or_create_unified_restaurant(unify_target)
+
+        # Unify時のソースの優先度順に並べる
+        # TODO ソースの優先順位の決定
         sorted_source_keys = sorted(unify_target.keys(), key=lambda x: x.value)
 
         target_unified_restaurant.name = self._get_best_attribute('name', unify_target, sorted_source_keys)
@@ -95,9 +111,11 @@ class Unifier(abc.ABC):
         target_unified_restaurant.longitude = self._get_best_attribute('longitude', unify_target, sorted_source_keys)
         target_unified_restaurant.address = self._get_best_attribute('address', unify_target, sorted_source_keys)
         target_unified_restaurant.tel = self._get_best_attribute('tel', unify_target, sorted_source_keys)
+        # TODO 今後増える
         target_unified_restaurant.gnavi_restaurant = unify_target.get(SourceType.GNAVI)
 
         target_unified_restaurant.save()
+        return target_unified_restaurant
 
     def _get_best_attribute(self, attr_name, source_dict, priority_source_key_list):
         """
@@ -118,7 +136,8 @@ class Unifier(abc.ABC):
 
     def _is_unify_able(self, candidate):
         """
-        統合可能か
+        統合可能かの判定
+        TODO
         :return:
         """
         longitude = self.source_object.longitude

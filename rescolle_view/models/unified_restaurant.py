@@ -12,6 +12,9 @@ class UnifiedRestaurant(models.Model):
     tel = models.CharField(max_length=200, null=False, blank=False)
     gnavi_restaurant = models.ForeignKey(GnaviRestaurant, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return 'UnifiedRestaurant({}: {})'.format(self.id, self.name)
+
     @classmethod
     def get_by_gnavi_restaurant(cls, gnavi_restaurant):
         try:
