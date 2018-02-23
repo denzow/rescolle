@@ -29,6 +29,13 @@ def get_coordinate_list(request):
 
 
 def generate_restaurant_endpoint(request, json_serial):
+    """
+    クローラから叩かれるエンドポイント
+    JSONをもとに対応するレストランを生成する
+    :param request:
+    :param json_serial:
+    :return:
+    """
     crawled_data = get_crawled_data_by_serial(serial=json_serial)
     generate_restaurant_data(crawled_data.json, crawled_data.source_type)
     crawled_data.clear_serial()

@@ -1,0 +1,43 @@
+FROM ubuntu:16.04
+MAINTAINER denzow <denzow@gmail.com>
+
+EXPOSE 3000
+ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
+
+WORKDIR /app
+
+RUN apt-get -y update && apt-get -y install git wget curl g++ gcc make libssl-dev mysql-client language-pack-ja \
+                       libmysqlclient-dev vim-tiny libjpeg-dev libpng-dev zlib1g-dev libpng12-dev vim \
+                       mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8 xz-utils libbz2-dev libsqlite3-dev file && \
+
+# neologdの導入
+    cd /var/lib/mecab/dic && git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git && \
+    cd mecab-ipadic-neologd && ./bin/install-mecab-ipadic-neologd -y -n -u && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /usr/lib/python2.7 && \
+    rm -rf /var/lib/mecab/dic/mecab-ipadic-neologd
+
+# Python, pip のインストール
+RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tgz && \
+    tar -xf Python-3.6.4.tgz && \
+    cd Python-3.6.4 && \
+    ./configure && make && make install && \
+    cp ./python /usr/bin/ && \
+    rm -rf /usr/local/lib/python3.6/site-packages/pip* && \
+    curl -kL https://bootstrap.pypa.io/get-pip.py | python && \
+    pip install -v pip-tools==1.9.0 && \
+
+# 掃除
+    rm -rf /Python-* && \
+    rm -rf /usr/share/man/* && \
+    rm -rf /usr/share/doc/* && \
+    rm -rf /root/.cache && \
+    rm -rf /app/Python-3.6.4.tgz && \
+    rm -rf /app/Python-3.6.4
+
+# ライブラリのインストール
+ADD requirements.txt requirements.txt
+
+RUN pip-sync /app/requirements.txt
+
+ADD . /app

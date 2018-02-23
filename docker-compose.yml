@@ -1,0 +1,22 @@
+version: '3.0'
+services:
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile_service
+    command: '/app/docker/service/start-server_dev.sh'
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - HOGE=1
+
+  service_nginx:
+    build:
+      context: ./docker/service_nginx
+    command: '/start-nginx.sh'
+    ports:
+      - "8000:8000"
+    links:
+      - service
