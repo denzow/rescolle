@@ -20,3 +20,12 @@ class UnifiedRestaurant(models.Model):
             return cls.objects.get(gnavi_restaurant=gnavi_restaurant)
         except cls.DoesNotExist:
             return None
+
+    @classmethod
+    def get_list_by_keyword(cls, keyword):
+        return list(cls.objects.filter(gnavi_restaurant__pr_long__contains=keyword))
+
+    @classmethod
+    def get_all_valid_list(cls):
+        return list(cls.objects.exclude(latitude=-1, longitude=-1))
+

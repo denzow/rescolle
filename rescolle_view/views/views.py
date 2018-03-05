@@ -2,6 +2,7 @@ import threading
 from django.shortcuts import render
 from django.http import JsonResponse
 
+from rescolle_view.unified_restaurant import service as ur_sv
 from rescolle_view.sns_restaurant import service as sns_res_sv
 from rescolle_view.crawl_raw_data import service as raw_sv
 
@@ -9,19 +10,19 @@ from rescolle_view.crawl_raw_data import service as raw_sv
 def index(request):
     return render(request, 'index.html')
 
-#
-# def get_coordinate_list(request):
-#
-#     keyword = request.GET.get('keyword')
-#     if keyword:
-#         restaurant_coordinate_list = get_restaurant_coordinate_list_by_keyword(keyword)
-#     else:
-#         restaurant_coordinate_list = get_all_restaurant_coordinate_list()
-#
-#     return JsonResponse({
-#         'restaurants': restaurant_coordinate_list,
-#         'center': get_center_position(restaurant_coordinate_list),
-#     })
+
+def get_coordinate_list(request):
+
+    keyword = request.GET.get('keyword')
+    if keyword:
+        restaurant_coordinate_list = ur_sv.get_restaurant_coordinate_list_by_keyword(keyword)
+    else:
+        restaurant_coordinate_list = ur_sv.get_all_restaurant_coordinate_list()
+
+    return JsonResponse({
+        'restaurants': restaurant_coordinate_list,
+        'center': ur_sv.get_center_position(restaurant_coordinate_list),
+    })
 
 
 def generate_restaurant_endpoint(request, json_serial):
