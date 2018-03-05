@@ -1,7 +1,8 @@
 import json
 
 from django.db import models
-from ..constraints import SourceType
+
+from rescolle_view.sns_restaurant.constraints import SourceType
 
 
 class CrawlRawData(models.Model):
@@ -10,6 +11,9 @@ class CrawlRawData(models.Model):
     source = models.IntegerField()
     crawled_at = models.DateTimeField(auto_now_add=True)
     serial = models.TextField(blank=True, null=True, unique=True)
+
+    def __str__(self):
+        return 'CrawlRawData({} {}, already generated {})'.format(self.id, self.source_type, self.serial is None)
 
     @classmethod
     def get_by_serial(cls, serial):
@@ -25,6 +29,10 @@ class CrawlRawData(models.Model):
     @property
     def source_type(self):
         return SourceType(self.source)
+
+    @property
+    def is_need_generate(self):
+        return self.serial is not None
 
     def clear_serial(self):
         self.serial = None

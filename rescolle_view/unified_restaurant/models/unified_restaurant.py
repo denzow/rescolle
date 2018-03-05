@@ -1,5 +1,4 @@
 from django.db import models
-from .gnavi_restaurant import GnaviRestaurant
 
 
 class UnifiedRestaurant(models.Model):
@@ -10,7 +9,7 @@ class UnifiedRestaurant(models.Model):
     longitude = models.FloatField()
     address = models.CharField(max_length=200, null=False, blank=False)
     tel = models.CharField(max_length=200, null=False, blank=False)
-    gnavi_restaurant = models.ForeignKey(GnaviRestaurant, on_delete=models.SET_NULL, null=True)
+    gnavi_restaurant = models.ForeignKey('sns_restaurant.GnaviRestaurant', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return 'UnifiedRestaurant({}: {})'.format(self.id, self.name)

@@ -2,9 +2,9 @@
 
 import abc
 
-from ..models import GnaviRestaurant, UnifiedRestaurant
-from ..constraints import SourceType
-from ..exceptions import RescolleExceptions
+from rescolle_view.common.exceptions import RescolleExceptions
+from ..models.unified_restaurant import UnifiedRestaurant
+from rescolle_view.sns_restaurant.constraints import SourceType
 
 
 def get_unifier(source_type: SourceType):
@@ -132,7 +132,7 @@ class Unifier(abc.ABC):
 
     @staticmethod
     def _is_gnavi_restaurant(target):
-        return isinstance(target, GnaviRestaurant)
+        return target.source_type.is_gnavi()
 
     def _is_unify_able(self, candidate):
         """

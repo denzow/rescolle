@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from ..models import GnaviRestaurant
+from ..models.gnavi_restaurant import GnaviRestaurant
 
 
 def generate_gnavi_restaurant(raw_dict_list: list):

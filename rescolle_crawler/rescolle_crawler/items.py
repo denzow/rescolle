@@ -10,8 +10,8 @@ import uuid
 
 from scrapy_djangoitem import DjangoItem
 
-from rescolle_view.constraints import SourceType
-from rescolle_view.models import CrawlRawData
+from rescolle_view.sns_restaurant.constraints import SourceType
+from rescolle_view.crawl_raw_data.models import CrawlRawData
 
 
 class CrawlJsonItem(DjangoItem):

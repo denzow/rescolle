@@ -1,4 +1,5 @@
 from django.db import models
+from ..constraints import SourceType
 
 
 class GnaviRestaurant(models.Model):
@@ -31,6 +32,10 @@ class GnaviRestaurant(models.Model):
     def __str__(self):
         return 'GnaviRestaurant({}: {}, {})'.format(self.id, self.restaurant_id, self.name)
 
+    @property
+    def source_type(self):
+        return SourceType.GNAVI
+
     @classmethod
     def get_by_restaurant_id(cls, restaurant_id):
         try:
@@ -53,3 +58,4 @@ class GnaviRestaurant(models.Model):
     def update(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
+

@@ -108,7 +108,4 @@ GNAVI_AREA_JSON_PATH = os.path.join(BASE_DIR, 'rescolle_crawler', 'gnavi_area.js
 
 GNAVI_RESTAURANT_OUTPUT_DATA_DIR = os.path.join(BASE_DIR, '..')
 
-RESCOLLE_DB_PATH = os.path.join(BASE_DIR, '..', 'rescolle.db')
-
-
-RESCOLLE_SERVER_ENDPOINT = 'http://127.0.0.1:8000/app/request/generate_restaurant/'
+RESCOLLE_SERVER_ENDPOINT = 'http://service-nginx:8000/app/request/generate_restaurant/'

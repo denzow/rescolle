@@ -2,11 +2,10 @@
 
 from statistics import mean
 
-from .constraints import SourceType
-from .models import GnaviRestaurant, CrawlRawData
-
 from .generator import generate_gnavi_restaurant
-from .unifier import get_unifier
+from .models.gnavi_restaurant import GnaviRestaurant
+from rescolle_view.unified_restaurant.unifier import get_unifier
+from .constraints import SourceType
 
 
 def get_restaurant_coordinate_list_by_keyword(keyword: str) -> list:
@@ -45,10 +44,6 @@ def get_center_position(position_list) -> dict:
     return {'latitude': avg_latitude, 'longitude': avg_longitude}
 
 
-def get_crawled_data_by_serial(serial: str) -> CrawlRawData:
-    return CrawlRawData.get_by_serial(serial)
-
-
 def generate_restaurant_data(raw_dict_list: list, source_type: SourceType):
     """
     JSONから対応するレストランモデルを構築する
@@ -64,6 +59,6 @@ def generate_restaurant_data(raw_dict_list: list, source_type: SourceType):
 
     for restaurant in restaurant_list:
         unified_restaurant = unifier(restaurant)
-        print(unified_restaurant.unify())
+        print('unified', unified_restaurant.unify())
 
 

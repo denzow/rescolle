@@ -10,9 +10,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - HOGE=1
+      - GNAVI_API_KEY=${GNAVI_API_KEY}
+      - IS_DEVELOP=True
 
-  service_nginx:
+  service-nginx:
     build:
       context: ./docker/service_nginx
     command: '/start-nginx.sh'
