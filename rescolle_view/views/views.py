@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rescolle_view.unified_restaurant import service as ur_sv
 from rescolle_view.sns_restaurant import service as sns_res_sv
 from rescolle_view.crawl_raw_data import service as raw_sv
-
+from rescolle_view.common import logger
 
 def index(request):
     return render(request, 'index.html')
@@ -33,13 +33,18 @@ def generate_restaurant_endpoint(request, json_serial):
     :param json_serial:
     :return:
     """
+
     def _async(target_crawled_data):
-        sns_res_sv.generate_restaurant_data(crawled_data.json, target_crawled_data.source_type)
+        logger.info('generate run')
+        sns_res_sv.generate_restaurant_data(target_crawled_data.json, target_crawled_data.source_type)
         target_crawled_data.clear_serial()
 
     crawled_data = raw_sv.get_crawled_data_by_serial(serial=json_serial)
     if crawled_data:
-        threading.Thread(target=_async, args=(crawled_data, ))
+        thread = threading.Thread(target=_async, args=(crawled_data, ))
+        thread.start()
+        logger.info('generate run')
+
         return JsonResponse({
             'status': 'end',
             'error': '',

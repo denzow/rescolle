@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'rescolle.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'rescolle.db'),
+        'NAME': os.path.join(BASE_DIR, '../../rescolle.db'),
     }
 }
 
@@ -119,10 +119,38 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # Static file settings
-STATIC_ROOT = os.path.join(APP_ROOT_PATH, 'staticfiles')
-STATICFILES_LOCATION = os.path.join(APP_ROOT_PATH, 'staticfiles')
+STATIC_ROOT = os.path.join(APP_ROOT_PATH, '../staticfiles')
+STATICFILES_LOCATION = os.path.join(APP_ROOT_PATH, '../staticfiles')
 
 IS_DEVELOP = False
-if os.environ.get('IS_DEVELOP'):
-    IS_DEVELOP = True
-    ALLOWED_HOSTS = ['*']
+
+
+LOGGING = {
+    'version': 1,   # これを設定しないと怒られる
+    'formatters': { # 出力フォーマットを文字列形式で指定する
+        'all': {    # 出力フォーマットに`all`という名前をつける
+            'format': '\t'.join([
+                "[%(levelname)s]",
+                "asctime:%(asctime)s",
+                "module:%(module)s",
+                "message:%(message)s",
+                "process:%(process)d",
+                "thread:%(thread)d",
+            ])
+        },
+    },
+    'handlers': {  # ログをどこに出すかの設定
+        'console': { # どこに出すかの設定をもう一つ、こちらの設定には`console`という名前
+            'level': 'DEBUG',
+            # こちらは標準出力に出してくれるクラスを指定
+            'class': 'logging.StreamHandler',
+            'formatter': 'all'
+        },
+    },
+    'loggers': {  # どんなloggerがあるかを設定する
+        'command': {  # commandという名前のloggerを定義
+            'handlers': ['console'],  # 先述のfile, consoleの設定で出力
+            'level': 'DEBUG',
+        },
+    },
+}

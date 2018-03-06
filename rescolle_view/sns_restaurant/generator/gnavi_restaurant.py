@@ -1,4 +1,5 @@
 # coding: utf-8
+from rescolle_view.common import logger
 
 from ..models.gnavi_restaurant import GnaviRestaurant
 
@@ -55,15 +56,15 @@ def generate_gnavi_restaurant(raw_dict_list: list):
 
         instance = GnaviRestaurant.get_by_restaurant_id(restaurant_id=parsed_data['restaurant_id'])
         if instance:
-            print('update', instance)
             instance.update(**parsed_data)
+            logger.debug('update {}'.format(instance))
         else:
-            print('create', instance)
             instance = GnaviRestaurant(**parsed_data)
+            logger.debug('update {}'.format(instance))
         try:
             instance.save()
         except Exception as e:
-            print(instance.longitude, instance.latitude, instance)
+            logger.error('generate failed[{} {} {}]'.format(instance.longitude, instance.latitude, instance))
             raise e
         restaurant_list.append(instance)
 
