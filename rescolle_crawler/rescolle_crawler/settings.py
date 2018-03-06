@@ -11,7 +11,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'rescolle.settings'
 
 django.setup()
 
-LOG_LEVEL = 'ERROR'
+LOG_LEVEL = 'DEBUG'
 
 # Scrapy settings for restaurant_collector project
 #

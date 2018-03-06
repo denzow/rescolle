@@ -37,6 +37,7 @@ class RestaurantCollectorPipeline(object):
             json.dump(self.tmp_item_list, f, indent=4, ensure_ascii=False)
 
         # 終了通知
+        spider.logger.info('send finish message for {}'.format(crawl_json_item['serial']))
         requests.get(self.request_endpoint + crawl_json_item['serial'])
 
     def process_item(self, item, spider):
