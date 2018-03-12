@@ -35,7 +35,7 @@
         makerArray.forEach(function (marker, idx) { marker.setMap(null); });
         makerArray = [];
 
-        fetch('/app/get_coordinate_list?keyword=' + keyWord, {
+        fetch('/get_coordinate_list?keyword=' + keyWord, {
             method: 'GET',
             mode: 'same-origin',
             credentials: 'include'

@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', include('rescolle_view.views.urls'))
+    path('', include('rescolle_view.views.urls'))
 ]
 
 if settings.IS_DEVELOP:
