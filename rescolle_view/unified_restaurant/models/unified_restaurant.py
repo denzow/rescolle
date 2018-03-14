@@ -10,7 +10,6 @@ class UnifiedRestaurant(models.Model):
     address = models.CharField(max_length=200, null=False, blank=False)
     tel = models.CharField(max_length=200, null=False, blank=False)
     gnavi_restaurant = models.ForeignKey('sns_restaurant.GnaviRestaurant', on_delete=models.SET_NULL, null=True)
-    tags = models.ManyToManyField('tag.Tag')
 
     def __str__(self):
         return 'UnifiedRestaurant({}: {})'.format(self.id, self.name)

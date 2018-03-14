@@ -31,7 +31,8 @@ INSTALLED_APPS = [
 
     'rescolle_view.sns_restaurant',
     'rescolle_view.crawl_raw_data',
-    'rescolle_view.unified_restaurant'
+    'rescolle_view.unified_restaurant',
+    'rescolle_view.tag'
 
 ]
 
@@ -154,3 +155,5 @@ LOGGING = {
         },
     },
 }
+
+MECAB_DICT_DIR = '/usr/lib/mecab/dic/mecab-ipadic-neologd'

@@ -5,7 +5,7 @@ import abc
 from rescolle_view.common.exceptions import RescolleExceptions
 from ..models.unified_restaurant import UnifiedRestaurant
 from rescolle_view.sns_restaurant.constraints import SourceType
-
+from rescolle_view.tag import service as tag_sv
 
 def get_unifier(source_type: SourceType):
 
@@ -86,7 +86,9 @@ class Unifier(abc.ABC):
         if ur_list:
             return ur_list[0]
         else:
-            return UnifiedRestaurant()
+            ur = UnifiedRestaurant()
+            ur.save()
+            return ur
 
     def unify(self):
         """
@@ -111,6 +113,12 @@ class Unifier(abc.ABC):
         target_unified_restaurant.longitude = self._get_best_attribute('longitude', unify_target, sorted_source_keys)
         target_unified_restaurant.address = self._get_best_attribute('address', unify_target, sorted_source_keys)
         target_unified_restaurant.tel = self._get_best_attribute('tel', unify_target, sorted_source_keys)
+
+        restaurant_description_text = ' '.join(self._get_total_attribute('pr_short', unify_target)) + \
+                                      ' '.join(self._get_total_attribute('pr_long', unify_target))
+
+        self._set_tag_level(restaurant_description_text, target_unified_restaurant.id)
+
         # TODO 今後増える
         target_unified_restaurant.gnavi_restaurant = unify_target.get(SourceType.GNAVI)
 
@@ -129,6 +137,30 @@ class Unifier(abc.ABC):
                 return getattr(restaurant, attr_name)
 
         return None
+
+    def _get_total_attribute(self, attr_name, source_dict):
+        """
+        指定した属性について全て取得する
+        :param attr_name:
+        :param dict source_dict:
+        :return:
+        :rtype: list
+        """
+        result_list = []
+        for key, restaurant in source_dict.items():
+            result_list.append(getattr(restaurant, attr_name, ''))
+
+        return result_list
+
+    def _set_tag_level(self, description, restaurant_id):
+        """
+        レストランにタグレベルをセットする。毎回一回消す
+        :param description:
+        :param restaurant_id:
+        :return:
+        """
+        tag_sv.clear_tag_level(restaurant_id)
+        tag_sv.set_tag_level_to_restaurant(base_str=description, restaurant_id=restaurant_id)
 
     @staticmethod
     def _is_gnavi_restaurant(target):
