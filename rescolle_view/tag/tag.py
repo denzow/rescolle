@@ -21,3 +21,12 @@ class Tokenizer:
             node = node.next
         return tokens
 
+    def get_token_text_list(self, text):
+        self.tagger.parse('')
+        node = self.tagger.parseToNode(text)
+        tokens = []
+        while node:
+            if node.feature.split(self.delimiter)[0] not in ('助詞', '記号', '接頭詞') and node.surface != '':
+                tokens.append(node.surface)
+            node = node.next
+        return tokens

@@ -39,13 +39,27 @@ def set_tag_level_to_restaurant(base_str: str, restaurant_id: int) -> list:
     return tag_level_list
 
 
-def get_restaurant_by_tag_keyword(keyword: str, filter_level=0) -> list:
+def get_restaurant_by_tag_keyword(keyword: str, operator='and', filter_level=0) -> list:
     """
-    指定したタグを持つレストランIDを戻す
+    指定したタグを持つレストランIDを戻す。
+    フリーワードは一旦トークナイズしてから複数タグでのマッチングをする
     :param keyword:
     :param filter_level:
     :return:
     """
-    tag_level_list = RestaurantTagLevel.get_list_by_tag_keyword(keyword)
-    restaurant_id_list = [r.restaurant_id for r in tag_level_list if r.level > filter_level]
-    return restaurant_id_list
+    tokenizer = Tokenizer()
+    words = tokenizer.get_token_text_list(keyword)
+    result_id_list = []
+    for word in words:
+        tag_level_list = RestaurantTagLevel.get_list_by_tag_keyword(word)
+        restaurant_id_list = [r.restaurant_id for r in tag_level_list if r.level > filter_level]
+
+        if result_id_list:
+            if operator == 'and':
+                result_id_list = list(set(restaurant_id_list) & set(restaurant_id_list))
+            elif operator == 'or':
+                result_id_list = list(set(restaurant_id_list) | set(restaurant_id_list))
+        else:
+            result_id_list = restaurant_id_list
+
+    return result_id_list
