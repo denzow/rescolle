@@ -59,3 +59,12 @@ class GnaviRestaurant(models.Model):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+    @property
+    def description_text(self):
+        return '{} {} {}'.format(
+            self.pr_long,
+            self.pr_short,
+            self.name
+        )
+
+

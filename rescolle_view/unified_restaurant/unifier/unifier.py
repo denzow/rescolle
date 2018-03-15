@@ -114,9 +114,7 @@ class Unifier(abc.ABC):
         target_unified_restaurant.address = self._get_best_attribute('address', unify_target, sorted_source_keys)
         target_unified_restaurant.tel = self._get_best_attribute('tel', unify_target, sorted_source_keys)
 
-        restaurant_description_text = ' '.join(self._get_total_attribute('pr_short', unify_target)) + \
-                                      ' '.join(self._get_total_attribute('pr_long', unify_target))
-
+        restaurant_description_text = ' '.join(self._get_total_attribute('description_text', unify_target))
         self._set_tag_level(restaurant_description_text, target_unified_restaurant.id)
 
         # TODO 今後増える
