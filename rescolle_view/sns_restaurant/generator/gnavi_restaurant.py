@@ -36,23 +36,24 @@ def generate_gnavi_restaurant(raw_dict_list: list):
         }
 
         if not parsed_data['latitude']:
-            parsed_data['latitude'] = -1
+            parsed_data['latitude'] = None
         else:
             # 以下を参考に座標を修正
             # http://oitake.jugem.jp/?eid=153
             latitude = float(parsed_data['latitude'])
             longitude = float(parsed_data['longitude'])
             parsed_data['latitude'] = latitude - latitude * 0.00010695 + longitude * 0.000017464 + 0.0046017
+
         if not parsed_data['longitude']:
-            parsed_data['longitude'] = -1
+            parsed_data['longitude'] = None
         else:
             latitude = float(parsed_data['latitude'])
             longitude = float(parsed_data['longitude'])
             parsed_data['longitude'] = longitude - latitude * 0.000046038 - longitude * 0.000083043 + 0.010040
 
-        for key in parsed_data.keys():
-            if not parsed_data[key]:
-                parsed_data[key] = ''
+        # for key in parsed_data.keys():
+        #     if not parsed_data[key]:
+        #         parsed_data[key] = ''
 
         instance = GnaviRestaurant.get_by_restaurant_id(restaurant_id=parsed_data['restaurant_id'])
         if instance:
@@ -64,7 +65,9 @@ def generate_gnavi_restaurant(raw_dict_list: list):
         try:
             instance.save()
         except Exception as e:
-            logger.error('generate failed[{} {} {}]'.format(instance.longitude, instance.latitude, instance))
+            #logger.error('generate failed[{} {} {}]'.format(instance.longitude, instance.latitude, instance))
+            from pprint import pprint
+            pprint(parsed_data)
             raise e
         restaurant_list.append(instance)
 

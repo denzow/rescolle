@@ -10,8 +10,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - GNAVI_API_KEY=${GNAVI_API_KEY}
-      - IS_DEVELOP=True
+      GNAVI_API_KEY: ${GNAVI_API_KEY}
+      IS_DEVELOP: 'True'
+    links:
+      - db
 
   service-nginx:
     build:
@@ -21,3 +23,12 @@ services:
       - "8000:8000"
     links:
       - service
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: rescolle
+
