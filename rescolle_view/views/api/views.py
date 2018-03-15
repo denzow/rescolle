@@ -7,9 +7,6 @@ from rescolle_view.sns_restaurant import service as sns_res_sv
 from rescolle_view.crawl_raw_data import service as raw_sv
 from rescolle_view.common import logger
 
-def index(request):
-    return render(request, 'index.html')
-
 
 def get_coordinate_list(request):
 

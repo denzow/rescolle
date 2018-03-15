@@ -17,3 +17,7 @@ class RestaurantTagLevel(models.Model):
     @classmethod
     def delete_by_restaurant_id(cls, restaurant_id):
         cls.objects.filter(restaurant_id=restaurant_id).delete()
+
+    @classmethod
+    def get_list_by_tag_keyword(cls, keyword):
+        return list(cls.objects.filter(tag__name__contains=keyword))

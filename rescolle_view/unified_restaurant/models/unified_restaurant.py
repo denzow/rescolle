@@ -27,5 +27,12 @@ class UnifiedRestaurant(models.Model):
 
     @classmethod
     def get_all_valid_list(cls):
-        return list(cls.objects.exclude(latitude=-1, longitude=-1))
+        return list(cls.objects.exclude(latitude=None, longitude=None))
 
+    @classmethod
+    def get_list_by_id_list(cls, id_list):
+        """
+        :param list[int] id_list:
+        :return:
+        """
+        return list(cls.objects.exclude(latitude=None, longitude=None).filter(id__in=id_list))

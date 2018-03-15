@@ -46,7 +46,9 @@
             .then(json => {
                 console.log(json);
                 let center = json['center'];
-
+                if(center['latitude'] === null){
+                    return
+                }
                 map.panTo(new google.maps.LatLng(center['latitude'], center['longitude']));
 
                 for (let rest of json['restaurants']) {

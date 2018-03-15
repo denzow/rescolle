@@ -39,4 +39,13 @@ def set_tag_level_to_restaurant(base_str: str, restaurant_id: int) -> list:
     return tag_level_list
 
 
-
+def get_restaurant_by_tag_keyword(keyword: str, filter_level=0) -> list:
+    """
+    指定したタグを持つレストランIDを戻す
+    :param keyword:
+    :param filter_level:
+    :return:
+    """
+    tag_level_list = RestaurantTagLevel.get_list_by_tag_keyword(keyword)
+    restaurant_id_list = [r.restaurant_id for r in tag_level_list if r.level > filter_level]
+    return restaurant_id_list
