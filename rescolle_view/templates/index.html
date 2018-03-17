@@ -40,42 +40,67 @@
             mode: 'same-origin',
             credentials: 'include'
         })
-            .then(res => {
-                return res.json();
-            })
-            .then(json => {
-                console.log(json);
-                let center = json['center'];
-                if(center['latitude'] === null){
-                    return
-                }
-                map.panTo(new google.maps.LatLng(center['latitude'], center['longitude']));
+        .then(res => {
+            return res.json();
+        })
+        .then(json => {
+            let center = json['center'];
+            if(center['latitude'] === null){
+                return
+            }
+            map.panTo(new google.maps.LatLng(center['latitude'], center['longitude']));
 
-                for (let rest of json['restaurants']) {
-                    let maker = new google.maps.Marker({
-                        position: {
-                            "lat": rest['latitude'],
-                            "lng": rest['longitude'],
-                        },
-                        map: map,
-                        animation: google.maps.Animation.DROP,
-                        title: rest['name'],
-                    });
-                    maker.addListener('click', function (e) {
-                        let infoWindow = new google.maps.InfoWindow({
-                            content: this.title
-                        });
-                        infoWindow.open(map, this);
-                    });
-                    makerArray.push(maker);
-                }
-            })
+            for (let rest of json['restaurants']) {
+                let maker = new google.maps.Marker({
+                    position: {
+                        "lat": rest['latitude'],
+                        "lng": rest['longitude'],
+                    },
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: rest['name'],
+                    restaurantId: rest['id']
+                });
+                maker.addListener('click', function (e) {
+                    let tmpNode = document.createElement('h2');
+                    getRestaurantInfo(this.restaurantId)
+                        .then(json=>{
+                            tmpNode.innerHTML = this.restaurantId + this.title + '<br/>' + JSON.stringify(json['restaurant']);
+                            let infoWindow = new google.maps.InfoWindow({
+                                content: tmpNode
+                            });
+                            infoWindow.open(map, this);
+                        })
+                });
+                makerArray.push(maker);
+            }
+        });
     }
 
-    document.querySelector('#research').addEventListener('click', function(e){
+    function getRestaurantInfo(restaurantId){
+        return fetch('/get_restaurant/' + restaurantId, {
+            method: 'GET',
+            mode: 'same-origin',
+            credentials: 'include'
+        })
+        .then(res => {
+            return res.json();
+        })
+    }
+
+
+    document.querySelector('#research').addEventListener('click', e => {
         let keyWord = document.querySelector('#keyword').value;
         getRestaurantPoints(keyWord);
     }, false);
+
+    document.querySelector('#keyword').addEventListener('keypress', e => {
+        if(window.event.keyCode === 13){
+            let keyWord = document.querySelector('#keyword').value;
+            getRestaurantPoints(keyWord);
+        }
+    })
+
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
 </body>

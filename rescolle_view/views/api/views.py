@@ -8,6 +8,14 @@ from rescolle_view.crawl_raw_data import service as raw_sv
 from rescolle_view.common import logger
 
 
+
+def get_restaurant(request, restaurant_id):
+    info = ur_sv.get_restaurant_info(restaurant_id)
+    return JsonResponse({
+        'restaurant': info
+    })
+
+
 def get_coordinate_list(request):
 
     keyword = request.GET.get('keyword')

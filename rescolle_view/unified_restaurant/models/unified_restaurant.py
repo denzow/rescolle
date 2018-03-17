@@ -15,6 +15,14 @@ class UnifiedRestaurant(models.Model):
         return 'UnifiedRestaurant({}: {})'.format(self.id, self.name)
 
     @classmethod
+    def get_by_id(cls, restaurant_id):
+        try:
+            return cls.objects.get(id=restaurant_id)
+        except cls.DoesNotExist:
+            return None
+
+
+    @classmethod
     def get_by_gnavi_restaurant(cls, gnavi_restaurant):
         try:
             return cls.objects.get(gnavi_restaurant=gnavi_restaurant)
@@ -36,3 +44,7 @@ class UnifiedRestaurant(models.Model):
         :return:
         """
         return list(cls.objects.exclude(latitude=None, longitude=None).filter(id__in=id_list))
+
+    @property
+    def gnavi_restaurant_url(self):
+        return self.gnavi_restaurant.url
