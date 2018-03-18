@@ -32,3 +32,9 @@ services:
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: rescolle
 
+  task_runner:
+    build:
+      context: ./docker/task_runner
+    command: 'npm run dev'
+    ports:
+      - "8080:8080"
