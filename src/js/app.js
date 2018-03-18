@@ -1,13 +1,13 @@
 
-import MyComponent from './components/MyComponent.vue';
+import MyAppMap from './components/MyAppMap.vue';
 import Vue from 'vue';
 
 new Vue({
     el: '#app',
     components: {
-        MyComponent
+        MyAppMap
     },
-    template: '<my-component></my-component>'
+    template: '<my-app-map></my-app-map>'
 });
 
 Vue.component(MyComponent);

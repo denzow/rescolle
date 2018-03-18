@@ -35,7 +35,7 @@ services:
   task_runner:
     build:
       context: ./docker/task_runner
-    command: 'npm run dev'
+    command: 'sh /app/start-watch.sh'
     environment:
       CONTEXT_PATH: '/app/application/src/'
       ENTRY_NAME: 'app'

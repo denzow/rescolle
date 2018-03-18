@@ -12,7 +12,8 @@
   "dependencies": {
     "css-loader": "^0.28.11",
     "style-loader": "^0.20.3",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vue2-google-maps": "^0.8.11"
   },
   "devDependencies": {
     "babel-loader": "^7.1.4",
