@@ -36,5 +36,12 @@ services:
     build:
       context: ./docker/task_runner
     command: 'npm run dev'
+    environment:
+      CONTEXT_PATH: '/app/application/src/'
+      ENTRY_NAME: 'app'
+      ENTRY_PATH: '/app/application/src/js/app.js'
+      DIST_PATH: '/app/application/staticfiles/js'
+    volumes:
+      - .:/app/application
     ports:
-      - "8080:8080"
+      - "9000:3000"

@@ -1,9 +1,16 @@
-module.exports = {
-    entry: {
-        'app': './src/js/app.js',
-    },
+
+const ENVS = process.env;
+const CONTEXT_PATH = ENVS.CONTEXT_PATH;
+const ENTRY_NAME = ENVS.ENTRY_NAME;
+const ENTRY_PATH = ENVS.ENTRY_PATH;
+const DIST_PATH =  ENVS.DIST_PATH;
+
+
+config = {
+    context: CONTEXT_PATH,
+    entry: {},
     output: {
-        path: `${__dirname}/dist`,
+        path: DIST_PATH,
         filename: "[name].bundle.js"
     },
     resolve: {
@@ -20,9 +27,6 @@ module.exports = {
                 exclude: /node_modules/,
                 options: {
                     presets: [
-                        // env を指定することで、ES2017 を ES5 に変換。
-                        // {modules: false}にしないと import 文が Babel によって CommonJS に変換され、
-                        // webpack の Tree Shaking 機能が使えない
                         ['env', {'modules': false}]
                     ]
                 }
@@ -50,3 +54,6 @@ module.exports = {
         historyApiFallback: true,
     },
 };
+
+config.entry[ENTRY_NAME] = ENTRY_PATH;
+module.exports = config;
