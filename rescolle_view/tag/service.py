@@ -74,9 +74,9 @@ def get_restaurant_by_tag_keyword(keyword: str, operator=OPERATOR.AND, filter_le
 
         if result_id_list:
             if operator == OPERATOR.AND:
-                result_id_list = list(set(restaurant_id_list) & set(restaurant_id_list))
+                result_id_list = list(set(restaurant_id_list) & set(result_id_list))
             elif operator == OPERATOR.OR:
-                result_id_list = list(set(restaurant_id_list) | set(restaurant_id_list))
+                result_id_list = list(set(restaurant_id_list) | set(result_id_list))
         else:
             result_id_list = restaurant_id_list
 
