@@ -14,15 +14,20 @@
               @click="toggleInfoWindow(m, index)">
             </gmap-marker>
             <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
-            {{infoContent}}
+                <my-maker :restaurantInfo="infoContent"></my-maker>
             </gmap-info-window>
+
         </gmap-map>
     </div>
 </template>
 
 <script>
-    import * as VueGoogleMaps from 'vue2-google-maps';
     import Vue from 'vue';
+    import * as VueGoogleMaps from 'vue2-google-maps';
+    import MyMaker from './MyMaker.vue';
+    console.log(MyMaker);
+
+
 
     Vue.use(VueGoogleMaps, {
         load: {
@@ -30,8 +35,10 @@
             v: '',
         }
     });
-
     export default {
+        components: {
+          MyMaker
+        },
         data () {
             return {
                 center: {lat: 35.658581, lng: 139.745433},
@@ -112,7 +119,8 @@
                     .then(res => {
                         return res.json();
                     });
-                    this.infoContent = JSON.stringify(restaurantInfo);
+                    this.infoContent = restaurantInfo['restaurant'];
+                    console.log(this.infoContent);
                 }
             }
         },
