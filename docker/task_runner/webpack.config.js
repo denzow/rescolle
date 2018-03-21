@@ -17,6 +17,7 @@ config = {
         alias: {
             vue: 'vue/dist/vue.esm.js',
             vuex: 'vuex/dist/vuex.js',
+            va: 'vue2-admin-lte/src'
         }
     },
     module: {
@@ -33,7 +34,6 @@ config = {
             },
             {
                 test: /\.css$/,
-                exclude: /node_modules/,
                 loader: ['style-loader', 'css-loader'],
             },
             {
@@ -44,6 +44,10 @@ config = {
                     }
                 }
             },
+            {
+                test: /\.(otf|eot|svg|ttf|woff|woff2|jpg)(\?.+)?$/,
+                loader: 'url-loader'
+            }
         ]
     },
     devServer: {

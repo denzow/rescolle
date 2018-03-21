@@ -15,10 +15,10 @@ def get_restaurant_coordinate_list_by_keyword(keyword: str, north_east_lat=None,
         # 表示範囲より少し広めに取る
         restaurant_list = UnifiedRestaurant.get_list_by_id_list_with_coordinate(
             id_list=restaurant_id_list,
-            north_east_lat=north_east_lat + 0.005,
-            north_east_lng=north_east_lng + 0.005,
-            south_west_lat=south_west_lat - 0.005,
-            south_west_lng=south_west_lng - 0.005,
+            north_east_lat=north_east_lat,
+            north_east_lng=north_east_lng,
+            south_west_lat=south_west_lat,
+            south_west_lng=south_west_lng,
         )
     else:
         restaurant_list = UnifiedRestaurant.get_list_by_id_list(restaurant_id_list)

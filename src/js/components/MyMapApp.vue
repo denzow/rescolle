@@ -5,7 +5,7 @@
             ref="map"
             :center="center"
             :zoom="14"
-            style="width: 700px; height: 500px">
+            style="width: 90%; height: 700px">
             <gmap-marker
               :key="index"
               v-for="(m, index) in markers"
@@ -86,14 +86,6 @@
                         return res.json();
                     })
                     .then(json => {
-//                        let center = json['center'];
-//                        if(center['latitude'] === null){
-//                            return
-//                        }
-//                        this.center = {
-//                            lat: center['latitude'],
-//                            lng: center['longitude']
-//                        };
 
                         for (let rest of json['restaurants']) {
                             this.markers.push({

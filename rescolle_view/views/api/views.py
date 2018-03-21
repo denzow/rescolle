@@ -8,8 +8,13 @@ from rescolle_view.crawl_raw_data import service as raw_sv
 from rescolle_view.common import logger
 
 
-
 def get_restaurant(request, restaurant_id):
+    """
+    特定レストランの情報を戻す
+    :param request:
+    :param restaurant_id:
+    :return:
+    """
     info = ur_sv.get_restaurant_info(restaurant_id)
     return JsonResponse({
         'restaurant': info
@@ -26,10 +31,10 @@ def get_coordinate_list(request):
     if keyword:
         restaurant_coordinate_list = ur_sv.get_restaurant_coordinate_list_by_keyword(
             keyword=keyword,
-            north_east_lat=north_east_lat,
-            north_east_lng=north_east_lng,
-            south_west_lat=south_west_lat,
-            south_west_lng=south_west_lng,
+            north_east_lat=north_east_lat + 0.005,
+            north_east_lng=north_east_lng + 0.005,
+            south_west_lat=south_west_lat - 0.005,
+            south_west_lng=south_west_lng - 0.005,
         )
     else:
         restaurant_coordinate_list = ur_sv.get_all_restaurant_coordinate_list()

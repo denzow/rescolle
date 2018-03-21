@@ -1,13 +1,16 @@
 
-import MyMapApp from './components/MyMapApp.vue';
+import App from './App.vue';
 import Vue from 'vue';
+import 'va/lib/css'
+import 'va/lib/script'
+
 
 new Vue({
     el: '#app',
     components: {
-        MyMapApp
+        App
     },
-    template: '<my-map-app></my-map-app>'
+    template: '<app></app>'
 });
 
-Vue.component(MyMapApp);
+Vue.component(App);
