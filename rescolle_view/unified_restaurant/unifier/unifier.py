@@ -113,6 +113,7 @@ class Unifier(abc.ABC):
         target_unified_restaurant.longitude = self._get_best_attribute('longitude', unify_target, sorted_source_keys)
         target_unified_restaurant.address = self._get_best_attribute('address', unify_target, sorted_source_keys)
         target_unified_restaurant.tel = self._get_best_attribute('tel', unify_target, sorted_source_keys)
+        target_unified_restaurant.description = self._get_longest_attributes('description', unify_target)
 
         restaurant_description_text = ' '.join(self._get_total_attribute('description_text', unify_target))
         self._set_tag_level(restaurant_description_text, target_unified_restaurant.id)
@@ -149,6 +150,25 @@ class Unifier(abc.ABC):
             result_list.append(getattr(restaurant, attr_name, ''))
 
         return result_list
+
+    def _get_longest_attributes(self, attr_name, source_dict):
+        """
+        最も長い属性を取得する
+        :param attr_name:
+        :param source_dict:
+        :return:
+        """
+        tmp_list = []
+        for source_key in source_dict:
+            restaurant = source_dict.get(source_key)
+            if restaurant and getattr(restaurant, attr_name):
+                tmp_list.append(getattr(restaurant, attr_name))
+        if not tmp_list:
+            return ''
+
+        tmp_list.sort(key=lambda x: len(x))
+        return tmp_list[0]
+
 
     def _set_tag_level(self, description, restaurant_id):
         """

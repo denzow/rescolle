@@ -60,6 +60,14 @@ class GnaviRestaurant(models.Model):
             setattr(self, key, value)
 
     @property
+    def description(self):
+        if self.pr_long:
+            return self.pr_long
+        if self.pr_short:
+            return self.pr_short
+        return ''
+
+    @property
     def description_text(self):
         return '{} {} {}'.format(
             self.pr_long,

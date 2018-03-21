@@ -17,12 +17,9 @@
     export default {
         name: 'app',
         components: {
-            MySideBar,
-            MyHeader,
             'my-map-app': MyMapApp,
             'my-header': MyHeader,
             'my-side-bar': MySideBar,
-
         }
     }
 </script>

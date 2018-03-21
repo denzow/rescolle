@@ -64,5 +64,6 @@ def get_restaurant_info(restaurant_id: int):
         'name': restaurant.name,
         'tel': restaurant.tel,
         'address': restaurant.address,
+        'description': restaurant.description,
         'gnavi_url': restaurant.gnavi_restaurant_url
     }

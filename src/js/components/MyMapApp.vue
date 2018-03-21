@@ -17,6 +17,7 @@
                 <my-maker :restaurantInfo="infoContent"></my-maker>
             </gmap-info-window>
         </gmap-map>
+        <restaurant-menu :restaurantInfo="infoContent"></restaurant-menu>
     </div>
 </template>
 
@@ -25,6 +26,7 @@
     import Vue from 'vue';
     import * as VueGoogleMaps from 'vue2-google-maps';
     import MyMaker from './MyMaker.vue';
+    import RestaurantMenu from './RestaurantMenu.vue';
     import {
         getCookie,
         generateFormData,
@@ -40,6 +42,7 @@
     export default {
         components: {
             'my-maker': MyMaker,
+            'restaurant-menu': RestaurantMenu,
         },
         created: function() {
             EventBus.$on('search-restaurant', (data)=>{this.search(data.keyword)});
