@@ -2,9 +2,10 @@
     <div>
         <input type="text" @keyup.enter="search" v-model="keyword"/><input type="button" value="検索" />
         <gmap-map
+            ref="map"
             :center="center"
             :zoom="14"
-            style="width: 500px; height: 300px">
+            style="width: 700px; height: 500px">
             <gmap-marker
               :key="index"
               v-for="(m, index) in markers"
@@ -16,7 +17,6 @@
             <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
                 <my-maker :restaurantInfo="infoContent"></my-maker>
             </gmap-info-window>
-
         </gmap-map>
     </div>
 </template>
@@ -25,8 +25,10 @@
     import Vue from 'vue';
     import * as VueGoogleMaps from 'vue2-google-maps';
     import MyMaker from './MyMaker.vue';
-    console.log(MyMaker);
-
+    import {
+        getCookie,
+        generateFormData,
+    } from '../lib/utils';
 
 
     Vue.use(VueGoogleMaps, {
@@ -37,21 +39,12 @@
     });
     export default {
         components: {
-          MyMaker
+            'my-maker': MyMaker,
         },
         data () {
             return {
                 center: {lat: 35.658581, lng: 139.745433},
-                markers: [
-                    {
-                        position: {lat: 35.658581, lng: 139.745433},
-                        infoText: 'test1'
-                    },
-                    {
-                        position: {lat: 35.659581, lng: 139.745433},
-                        infoText: 'test2'
-                    }
-                ],
+                markers: [],
                 currentMidx: null,
                 infoWinOpen: false,
                 infoContent: '',
@@ -67,26 +60,40 @@
                 },
                 keyword: '',
                 search: function(){
-                    let keyWord = this.keyword;
-                    console.log(keyWord);
+                    const map = this.$refs.map.$mapObject;
+                    const bounds = map.getBounds();
+                    console.log(map.getBounds());
+                    const data = {
+                        'keyword': this.keyword,
+                        'north_east_lat': bounds.getNorthEast().lat(),
+                        'north_east_lng': bounds.getNorthEast().lng(),
+                        'south_west_lat': bounds.getSouthWest().lat(),
+                        'south_west_lng': bounds.getSouthWest().lng(),
+                    };
+
                     this.markers = [];
-                    fetch('/get_coordinate_list?keyword=' + keyWord, {
-                        method: 'GET',
+                    fetch('/get_coordinate_list', {
+                        method: 'POST',
                         mode: 'same-origin',
-                        credentials: 'include'
+                        credentials: 'include',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Accept': 'application/json',
+                        },
+                        body: generateFormData(data)
                     })
                     .then(res => {
                         return res.json();
                     })
                     .then(json => {
-                        let center = json['center'];
-                        if(center['latitude'] === null){
-                            return
-                        }
-                        this.center = {
-                            lat: center['latitude'],
-                            lng: center['longitude']
-                        };
+//                        let center = json['center'];
+//                        if(center['latitude'] === null){
+//                            return
+//                        }
+//                        this.center = {
+//                            lat: center['latitude'],
+//                            lng: center['longitude']
+//                        };
 
                         for (let rest of json['restaurants']) {
                             this.markers.push({

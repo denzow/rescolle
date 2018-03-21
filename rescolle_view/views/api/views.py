@@ -18,9 +18,19 @@ def get_restaurant(request, restaurant_id):
 
 def get_coordinate_list(request):
 
-    keyword = request.GET.get('keyword')
+    keyword = request.POST.get('keyword')
+    north_east_lat = float(request.POST.get('north_east_lat'))
+    north_east_lng = float(request.POST.get('north_east_lng'))
+    south_west_lat = float(request.POST.get('south_west_lat'))
+    south_west_lng = float(request.POST.get('south_west_lng'))
     if keyword:
-        restaurant_coordinate_list = ur_sv.get_restaurant_coordinate_list_by_keyword(keyword)
+        restaurant_coordinate_list = ur_sv.get_restaurant_coordinate_list_by_keyword(
+            keyword=keyword,
+            north_east_lat=north_east_lat,
+            north_east_lng=north_east_lng,
+            south_west_lat=south_west_lat,
+            south_west_lng=south_west_lng,
+        )
     else:
         restaurant_coordinate_list = ur_sv.get_all_restaurant_coordinate_list()
 

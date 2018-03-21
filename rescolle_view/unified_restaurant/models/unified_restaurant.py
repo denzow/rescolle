@@ -45,6 +45,23 @@ class UnifiedRestaurant(models.Model):
         """
         return list(cls.objects.exclude(latitude=None, longitude=None).filter(id__in=id_list))
 
+    @classmethod
+    def get_list_by_id_list_with_coordinate(cls, id_list, north_east_lat, north_east_lng, south_west_lat, south_west_lng):
+        """
+        指定IDについて座標内のものを戻す
+        :param id_list:
+        :param north_east_lat:
+        :param north_east_lng:
+        :param south_west_lat:
+        :param south_west_lng:
+        :return:
+        """
+        query_set = cls.objects.filter(
+            latitude__range=(south_west_lat, north_east_lat),
+            longitude__range=(south_west_lng, north_east_lng),
+        ).filter(id__in=id_list)
+        return list(query_set)
+
     @property
     def gnavi_restaurant_url(self):
         return self.gnavi_restaurant.url
