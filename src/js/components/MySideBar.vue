@@ -3,14 +3,14 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar" style="height: auto;">
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <form action="#" method="get" class="sidebar-form" v-on:submit.prevent="search">
         <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <input type="text" name="q" class="form-control" placeholder="Search..." v-model="searchWord" >
           <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                <button name="search" type="submit" id="search-btn" class="btn btn-flat">
                   <i class="fa fa-search"></i>
                 </button>
-              </span>
+          </span>
         </div>
       </form>
       <!-- /.search form -->
@@ -51,7 +51,19 @@
 </template>
 
 <script>
-export default {
-  name: 'MySideBar',
-}
+
+    import EventBus from '../eventbus/EventBus';
+
+    export default {
+        name: 'MySideBar',
+        data() {
+            return {
+                searchWord: '',
+                search: function(){
+                    console.log(this.searchWord);
+                    EventBus.$emit('search-restaurant', {'keyword': this.searchWord})
+                },
+            }
+        }
+    }
 </script>

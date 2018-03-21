@@ -1,6 +1,5 @@
 <template>
     <div>
-        <input type="text" @keyup.enter="search" v-model="keyword"/><input type="button" value="検索" />
         <gmap-map
             ref="map"
             :center="center"
@@ -22,6 +21,7 @@
 </template>
 
 <script>
+    import EventBus from '../eventbus/EventBus';
     import Vue from 'vue';
     import * as VueGoogleMaps from 'vue2-google-maps';
     import MyMaker from './MyMaker.vue';
@@ -41,6 +41,9 @@
         components: {
             'my-maker': MyMaker,
         },
+        created: function() {
+            EventBus.$on('search-restaurant', (data)=>{this.search(data.keyword)});
+        },
         data () {
             return {
                 center: {lat: 35.658581, lng: 139.745433},
@@ -59,12 +62,13 @@
                     lng: 0
                 },
                 keyword: '',
-                search: function(){
+                search: function(keyword){
+                    this.keyword = keyword;
                     const map = this.$refs.map.$mapObject;
                     const bounds = map.getBounds();
                     console.log(map.getBounds());
                     const data = {
-                        'keyword': this.keyword,
+                        'keyword': keyword,
                         'north_east_lat': bounds.getNorthEast().lat(),
                         'north_east_lng': bounds.getNorthEast().lng(),
                         'south_west_lat': bounds.getSouthWest().lat(),
