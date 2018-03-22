@@ -32,9 +32,9 @@ class RestaurantCollectorPipeline(object):
         crawl_json_item = CrawlJsonItem.create(self.tmp_item_list)
         crawl_json_item.save()
 
-        # 生データの保存
-        with open(os.path.join(self.output_base_dir, '{}.json'.format(spider.name)), 'w') as f:
-            json.dump(self.tmp_item_list, f, indent=4, ensure_ascii=False)
+        # # 生データの保存
+        # with open(os.path.join(self.output_base_dir, '{}.json'.format(spider.name)), 'w') as f:
+        #     json.dump(self.tmp_item_list, f, indent=4, ensure_ascii=False)
 
         # 終了通知
         spider.logger.info('send finish message for {}'.format(crawl_json_item['serial']))

@@ -13,39 +13,56 @@ from ..geo_repository import GeoRepository
 GNAVI_API_LIMIT = 1000
 
 
-class GnaviShibuyaSpider(scrapy.Spider):
+class GnaviSpider(scrapy.Spider):
 
-    name = 'gnavi_shibuya'
+    name = 'gnavi'
     allowed_domains = ['api.gnavi.co.jp']
+    # 大きいものが上位
+    area_code_type_list = [
+        'pref_code',
+        'areacode_l',
+        'areacode_m',
+        'areacode_s',
+    ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # 初期値 areacode_m 渋谷
+        self.start_area_code = kwargs.get('start_area_code', 'AREAL2125')
+        self.start_area_type = kwargs.get('start_area_type', 'areacode_l')
+
+        self.logger.debug('{} start for {}:{}'.format(self.name, self.start_area_type, self.start_area_code))
         # レストランサーチAPI
         self.api_url = 'https://api.gnavi.co.jp/RestSearchAPI/20150630/?offset_page={offset_page}&hit_per_page=100&format=json&keyid={api_key}&{areacode_type}={area_code}'
         self.gnavi_api_key = os.environ.get('GNAVI_API_KEY')
-        # areacode_m 渋谷
-        self.start_area_code = 'AREAL2125'
-        self.start_area_type = 'areacode_l'
-        # 大きいものが上位
-        self.area_code_type_list = [
-            'pref_code',
-            'areacode_l',
-            'areacode_m',
-            'areacode_s',
-        ]
 
     def start_requests(self):
         """
         ここから始まる
         :return:
         """
+        if self.start_area_type == 'pref_code':
+            one_point_down_code_type = self._get_lower_area_code_type(self.start_area_type, 1)
+            # エリアリポジトリからもともとのエリアを細分化した小エリアを取得する
+            sub_area_code_list = GeoRepository().search(**{
+                'select': one_point_down_code_type,
+                self.start_area_type: self.start_area_code
+            })
+            for code in sub_area_code_list:
+                yield self._get_request(
+                    offset_page=1,
+                    area_code_type=one_point_down_code_type,
+                    area_code=code,
+                    callback_parser=self.parse
+                )
 
-        yield self._get_request(
-            offset_page=1,
-            area_code_type=self.start_area_type,
-            area_code=self.start_area_code,
-            callback_parser=self.parse
-        )
+        else:
+            yield self._get_request(
+                offset_page=1,
+                area_code_type=self.start_area_type,
+                area_code=self.start_area_code,
+                callback_parser=self.parse
+            )
 
     def parse(self, response):
         """

@@ -106,6 +106,4 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 # custom settings
 GNAVI_AREA_JSON_PATH = os.path.join(BASE_DIR, 'rescolle_crawler', 'gnavi_area.json')
 
-GNAVI_RESTAURANT_OUTPUT_DATA_DIR = os.path.join(BASE_DIR, '..')
-
 RESCOLLE_SERVER_ENDPOINT = 'http://service-nginx:8000/request/generate_restaurant/'

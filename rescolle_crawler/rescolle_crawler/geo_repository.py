@@ -113,7 +113,8 @@ class GeoRepository:
 if __name__ == '__main__':
 
     with open('./gnavi_area.json') as f:
-        repo = GeoRepository(f.read())
+        repo = GeoRepository()
         print(repo.search('pref_name', areaname_m='渋谷'))
         print(repo.search('areaname_s', areaname_m='渋谷'))
+        print(repo.search('areacode_l', pref_code='PREF13'))
 
