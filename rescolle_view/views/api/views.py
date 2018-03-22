@@ -29,15 +29,21 @@ def get_coordinate_list(request):
     south_west_lat = float(request.POST.get('south_west_lat'))
     south_west_lng = float(request.POST.get('south_west_lng'))
     if keyword:
+        # 少し広めに取る
         restaurant_coordinate_list = ur_sv.get_restaurant_coordinate_list_by_keyword(
             keyword=keyword,
-            north_east_lat=north_east_lat + 0.005,
-            north_east_lng=north_east_lng + 0.005,
-            south_west_lat=south_west_lat - 0.005,
-            south_west_lng=south_west_lng - 0.005,
+            north_east_lat=north_east_lat * 1.00005,
+            north_east_lng=north_east_lng * 1.00005,
+            south_west_lat=south_west_lat * 0.99995,
+            south_west_lng=south_west_lng * 0.99995,
         )
     else:
-        restaurant_coordinate_list = ur_sv.get_all_restaurant_coordinate_list()
+        restaurant_coordinate_list = ur_sv.get_all_restaurant_coordinate_list_by_latlng(
+            north_east_lat=north_east_lat * 1.000001,
+            north_east_lng=north_east_lng * 1.000001,
+            south_west_lat=south_west_lat * 0.999999,
+            south_west_lng=south_west_lng * 0.999999,
+        )
 
     return JsonResponse({
         'restaurants': restaurant_coordinate_list,

@@ -28,12 +28,17 @@ def get_restaurant_coordinate_list_by_keyword(keyword: str, north_east_lat=None,
     ]
 
 
-def get_all_restaurant_coordinate_list() -> list:
+def get_all_restaurant_coordinate_list_by_latlng(north_east_lat=None, north_east_lng=None, south_west_lat=None, south_west_lng=None) -> list:
     """
     全レストランの座標のリストを戻す
     :return:
     """
-    all_restaurant_list = UnifiedRestaurant.get_all_valid_list()
+    all_restaurant_list = UnifiedRestaurant.get_list_by_latlng(
+        north_east_lat=north_east_lat,
+        north_east_lng=north_east_lng,
+        south_west_lat=south_west_lat,
+        south_west_lng=south_west_lng,
+    )
     return [
         {'id': x.id, 'latitude': x.latitude, 'longitude': x.longitude, 'name': x.name}
         for x in all_restaurant_list

@@ -17,7 +17,7 @@ class GnaviRestaurant(models.Model):
     address = models.CharField(max_length=600, null=False, blank=False)
     tel = models.CharField(max_length=600, null=False, blank=False)
     tel_sub = models.CharField(max_length=600, null=True, blank=True)
-    open_time = models.CharField(max_length=600, null=True, blank=True)
+    open_time = models.CharField(max_length=2000, null=True, blank=True)
     holiday = models.CharField(max_length=600, null=True, blank=True)
     pr_short = models.CharField(max_length=1000, null=True, blank=True)
     pr_long = models.TextField(null=True, blank=True)

@@ -39,6 +39,23 @@ class UnifiedRestaurant(models.Model):
         return list(cls.objects.exclude(latitude=None, longitude=None))
 
     @classmethod
+    def get_list_by_latlng(cls, north_east_lat, north_east_lng, south_west_lat, south_west_lng, limit=1000):
+        """
+        指定座標のすべてのリストを戻す
+        :param north_east_lat:
+        :param north_east_lng:
+        :param south_west_lat:
+        :param south_west_lng:
+        :return:
+        """
+        query_set = cls.objects.filter(
+            latitude__range=(south_west_lat, north_east_lat),
+            longitude__range=(south_west_lng, north_east_lng),
+        )[:1000]
+        return list(query_set)
+
+
+    @classmethod
     def get_list_by_id_list(cls, id_list):
         """
         :param list[int] id_list:
