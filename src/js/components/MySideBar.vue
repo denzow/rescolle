@@ -5,9 +5,9 @@
       <!-- search form -->
       <form action="#" method="get" class="sidebar-form" v-on:submit.prevent="search">
         <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search..." v-model="searchWord" >
+          <input type="text" name="q" class="form-control" :placeholder="searchMessage" v-model="searchWord" :disabled="isDisabled">
           <span class="input-group-btn">
-                <button name="search" type="submit" id="search-btn" class="btn btn-flat">
+                <button name="search" type="submit" id="search-btn" class="btn btn-flat" :disabled="isDisabled">
                   <i class="fa fa-search"></i>
                 </button>
           </span>
@@ -56,11 +56,21 @@
 
     export default {
         name: 'MySideBar',
+        searchMessage: 'Search...',
+        created() {
+            EventBus.$on('search-restaurant-end', (data)=>{
+                this.isDisabled = false;
+                this.searchMessage = 'Search...'
+            });
+        },
         data() {
             return {
+                isDisabled: false,
                 searchWord: '',
                 search: function(){
                     console.log(this.searchWord);
+                    this.isDisabled = true;
+                    this.searchMessage = 'Searching.'
                     EventBus.$emit('search-restaurant', {'keyword': this.searchWord})
                 },
             }

@@ -44,7 +44,7 @@
             'my-maker': MyMaker,
             'restaurant-menu': RestaurantMenu,
         },
-        created: function() {
+        created() {
             EventBus.$on('search-restaurant', (data)=>{this.search(data.keyword)});
         },
         data () {
@@ -103,6 +103,8 @@
                                 restaurantId: rest['id'],
                             })
                         }
+                        EventBus.$emit('search-restaurant-end', {});
+
                     });
                 },
                 toggleInfoWindow: async function (marker, idx) {

@@ -22,7 +22,6 @@ def get_restaurant(request, restaurant_id):
 
 
 def get_coordinate_list(request):
-
     keyword = request.POST.get('keyword')
     north_east_lat = float(request.POST.get('north_east_lat'))
     north_east_lng = float(request.POST.get('north_east_lng'))
