@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
 
+    'social_django',
+
     'rescolle_view.sns_restaurant',
     'rescolle_view.crawl_raw_data',
     'rescolle_view.unified_restaurant',
