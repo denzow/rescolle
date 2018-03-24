@@ -1,0 +1,18 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>れすこれ</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+</head>
+<body class="skin-purple-light sidebar-mini">
+
+    <a href="{% url "social:begin" "google-oauth2" %}">Google+</a> <br/>
+    <a href="{% url 'social:begin' 'twitter' %}?next={{ next}}">Login with Twitter</a> <br/>
+    <a href="{% url 'social:begin' 'facebook' %}?next={{ next}}">Login with Facebook</a>
+
+</body>
+</html>

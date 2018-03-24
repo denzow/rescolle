@@ -15,6 +15,8 @@ SECRET_KEY = '%jce=872=^@7pcgb^yq3d-(=p01#3p-og*#l$4xyo1(k5qa)m('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+IS_DEVELOP = False
+
 ALLOWED_HOSTS = []
 
 
@@ -65,6 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -125,8 +129,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(APP_ROOT_PATH, '../staticfiles')
 STATICFILES_LOCATION = os.path.join(APP_ROOT_PATH, '../staticfiles')
 
-IS_DEVELOP = False
-
 
 LOGGING = {
     'version': 1,   # これを設定しないと怒られる
@@ -157,5 +159,32 @@ LOGGING = {
         },
     },
 }
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# twitter
+SOCIAL_AUTH_TWITTER_KEY = os.environ['TWITTER_KEY']
+SOCIAL_AUTH_TWITTER_SECRET = os.environ['TWITTER_SECRET']
+
+# Facebook
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_ID']
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_SECRET']
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'fields': 'id, name, email, age_range'
+}
+
+# google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['GOOGLE_ID']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['GOOGLE_SECRET']
+
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
 
 MECAB_DICT_DIR = '/usr/lib/mecab/dic/mecab-ipadic-neologd'

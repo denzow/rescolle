@@ -12,6 +12,13 @@ services:
     environment:
       GNAVI_API_KEY: ${GNAVI_API_KEY}
       IS_DEVELOP: 'True'
+      TWITTER_KEY: ${TWITTER_KEY}
+      TWITTER_SECRET: ${TWITTER_SECRET}
+      FACEBOOK_ID: ${FACEBOOK_ID}
+      FACEBOOK_SECRET: ${FACEBOOK_SECRET}
+      GOOGLE_ID: ${GOOGLE_ID}
+      GOOGLE_SECRET: ${GOOGLE_SECRET}
+
     links:
       - db
 
