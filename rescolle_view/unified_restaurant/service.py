@@ -1,6 +1,7 @@
 # coding: utf-8
 from statistics import mean
 from .models import UnifiedRestaurant
+from .components import unified_restaurant_image_url as image_cmpt
 from rescolle_view.tag import service as tag_sv
 
 
@@ -70,5 +71,6 @@ def get_restaurant_info(restaurant_id: int):
         'tel': restaurant.tel,
         'address': restaurant.address,
         'description': restaurant.description,
-        'gnavi_url': restaurant.gnavi_restaurant_url
+        'image_url_list': image_cmpt.get_url_list_by_restaurant(restaurant),
+        'gnavi_url': restaurant.gnavi_restaurant_url,
     }

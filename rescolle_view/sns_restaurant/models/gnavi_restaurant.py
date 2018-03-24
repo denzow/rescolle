@@ -1,8 +1,9 @@
 from django.db import models
 from ..constraints import SourceType
+from .abstract_sns_restaurant import AbstractSnsRestaurant
 
 
-class GnaviRestaurant(models.Model):
+class GnaviRestaurant(models.Model, AbstractSnsRestaurant):
 
     restaurant_id = models.CharField(max_length=600, null=False, blank=False, unique=True)
     name = models.CharField(max_length=600, null=False, blank=False)
@@ -32,10 +33,6 @@ class GnaviRestaurant(models.Model):
     def __str__(self):
         return 'GnaviRestaurant({}: {}, {})'.format(self.id, self.restaurant_id, self.name)
 
-    @property
-    def source_type(self):
-        return SourceType.GNAVI
-
     @classmethod
     def get_by_restaurant_id(cls, restaurant_id):
         try:
@@ -58,6 +55,20 @@ class GnaviRestaurant(models.Model):
     def update(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+    @property
+    def source_type(self):
+        return SourceType.GNAVI
+
+    @property
+    def image_url_list(self):
+        image_url_list = []
+        if self.image_url_1:
+            image_url_list.append(self.image_url_1)
+        if self.image_url_2:
+            image_url_list.append(self.image_url_2)
+
+        return image_url_list
 
     @property
     def description(self):

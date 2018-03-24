@@ -2,10 +2,13 @@
 
 import abc
 
+from rescolle_view.common.helper import flatten
 from rescolle_view.common.exceptions import RescolleExceptions
-from ..models.unified_restaurant import UnifiedRestaurant
+from ..models import UnifiedRestaurant, UnifiedRestaurantImageUrl
+from ..components import create_restaurant_images
 from rescolle_view.sns_restaurant.constraints import SourceType
 from rescolle_view.tag import service as tag_sv
+
 
 def get_unifier(source_type: SourceType):
 
@@ -115,6 +118,10 @@ class Unifier(abc.ABC):
         target_unified_restaurant.tel = self._get_best_attribute('tel', unify_target, sorted_source_keys)
         target_unified_restaurant.description = self._get_longest_attributes('description', unify_target)
 
+        # 画像の統合
+        image_url_list = flatten(self._get_total_attribute('image_url_list', unify_target))
+        create_restaurant_images(restaurant=target_unified_restaurant, image_url_list=image_url_list)
+
         restaurant_description_text = ' '.join(self._get_total_attribute('description_text', unify_target))
         self._set_tag_level(restaurant_description_text, target_unified_restaurant.id)
 
@@ -168,7 +175,6 @@ class Unifier(abc.ABC):
 
         tmp_list.sort(key=lambda x: len(x))
         return tmp_list[0]
-
 
     def _set_tag_level(self, description, restaurant_id):
         """

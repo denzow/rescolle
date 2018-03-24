@@ -22,7 +22,6 @@ class UnifiedRestaurant(models.Model):
         except cls.DoesNotExist:
             return None
 
-
     @classmethod
     def get_by_gnavi_restaurant(cls, gnavi_restaurant):
         try:
