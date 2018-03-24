@@ -5,7 +5,7 @@ import abc
 from rescolle_view.common.helper import flatten
 from rescolle_view.common.exceptions import RescolleExceptions
 from ..models import UnifiedRestaurant, UnifiedRestaurantImageUrl
-from ..components import create_restaurant_images
+from ..components import unified_restaurant_image_url as image_url_cmpt
 from rescolle_view.sns_restaurant.constraints import SourceType
 from rescolle_view.tag import service as tag_sv
 
@@ -120,7 +120,7 @@ class Unifier(abc.ABC):
 
         # 画像の統合
         image_url_list = flatten(self._get_total_attribute('image_url_list', unify_target))
-        create_restaurant_images(restaurant=target_unified_restaurant, image_url_list=image_url_list)
+        image_url_cmpt.create_restaurant_images(restaurant=target_unified_restaurant, image_url_list=image_url_list)
 
         restaurant_description_text = ' '.join(self._get_total_attribute('description_text', unify_target))
         self._set_tag_level(restaurant_description_text, target_unified_restaurant.id)
