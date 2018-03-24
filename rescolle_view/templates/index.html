@@ -10,6 +10,10 @@
 </head>
 <body class="skin-purple-light sidebar-mini">
     <div id="app"></div>
+    <script>
+        var userName = '{{ request.user.username }}';
+        sessionStorage.userName = userName;
+    </script>
     <script src="{% static 'js/app.bundle.js' %}"></script>
 </body>
 </html>

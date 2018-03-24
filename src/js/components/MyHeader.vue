@@ -46,13 +46,17 @@
             </ul>
           </li>
           <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">Alexander Pierce</span>
+          <li class="dropdown user user-menu" >
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" v-if="userName">
+              <span class="hidden-xs">Welcome: {{ userName }}</span>
             </a>
+            <a href="/login" class="dropdown-toggle" v-if="!userName">
+              <span class="hidden-xs">LOGIN</span>
+            </a>
+
             <ul class="dropdown-menu">
               <li class="header">
-                <a href="/login" class="btn btn-default btn-flat">Profile</a>
+                <a href="/profile" class="btn btn-default btn-flat">Profile</a>
               </li>
               <li class="footer">
                 <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
@@ -64,6 +68,7 @@
           <li>
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
           </li>
+
         </ul>
       </div>
     </nav>
@@ -72,6 +77,11 @@
 
 <script>
 export default {
-  name: 'MyHeader',
+    name: 'MyHeader',
+    data() {
+        return {
+            userName: sessionStorage.userName,
+        }
+    }
 }
 </script>
