@@ -69,7 +69,6 @@
                     this.keyword = keyword;
                     const map = this.$refs.map.$mapObject;
                     const bounds = map.getBounds();
-                    console.log(map.getBounds());
                     const data = {
                         'keyword': keyword,
                         'north_east_lat': bounds.getNorthEast().lat(),

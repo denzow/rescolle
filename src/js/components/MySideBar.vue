@@ -16,7 +16,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu tree" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
+        <li class="header">コレクションリスト</li>
         <li class="active treeview menu-open">
           <a href="#">
             <i class="fa fa-folder"></i> <span>れすこれリスト</span>

@@ -51,24 +51,28 @@
               <span class="hidden-xs">Welcome: {{ userName }}</span>
             </a>
             <a href="/login" class="dropdown-toggle" v-if="!userName">
-              <span class="hidden-xs">LOGIN</span>
+              <span class="hidden-xs"><span class="fa fa-sign-in"></span> LOGIN</span>
             </a>
 
             <ul class="dropdown-menu">
-              <li class="header">
-                <a href="/profile" class="btn btn-default btn-flat">Profile</a>
+              <!-- User image -->
+              <li class="user-header">
+                <p>
+                  {{ userName }}
+                </p>
               </li>
-              <li class="footer">
-                <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="/profile" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
+                </div>
               </li>
-
             </ul>
-          </li>
-          <!-- Control Sidebar Toggle Button -->
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
 
+          </li>
         </ul>
       </div>
     </nav>
