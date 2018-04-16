@@ -65,72 +65,74 @@
                     lng: 0
                 },
                 keyword: '',
-                search: function(keyword){
-                    this.keyword = keyword;
-                    const map = this.$refs.map.$mapObject;
-                    const bounds = map.getBounds();
-                    const data = {
-                        'keyword': keyword,
-                        'north_east_lat': bounds.getNorthEast().lat(),
-                        'north_east_lng': bounds.getNorthEast().lng(),
-                        'south_west_lat': bounds.getSouthWest().lat(),
-                        'south_west_lng': bounds.getSouthWest().lng(),
-                    };
-
-                    this.markers = [];
-                    fetch('/get_coordinate_list', {
-                        method: 'POST',
-                        mode: 'same-origin',
-                        credentials: 'include',
-                        headers: {
-                            'X-CSRFToken': getCookie('csrftoken'),
-                            'Accept': 'application/json',
-                        },
-                        body: generateFormData(data)
-                    })
-                    .then(res => {
-                        return res.json();
-                    })
-                    .then(json => {
-
-                        for (let rest of json['restaurants']) {
-                            this.markers.push({
-                                position: {
-                                    lat: rest['latitude'],
-                                    lng: rest['longitude'],
-                                },
-                                restaurantId: rest['id'],
-                            })
-                        }
-                        EventBus.$emit('search-restaurant-end', {});
-
-                    });
-                },
-                toggleInfoWindow: async function (marker, idx) {
-                    this.infoWindowPos = marker.position;
-
-                    //check if its the same marker that was selected if yes toggle
-                    if (this.currentMidx === idx) {
-                        this.infoWinOpen = !this.infoWinOpen;
-                    }
-                    //if different marker set infowindow to open and reset current marker index
-                    else {
-                        this.infoWinOpen = true;
-                        this.currentMidx = idx;
-                    }
-                    let restaurantInfo = await fetch('/get_restaurant/' + marker.restaurantId, {
-                        method: 'GET',
-                        mode: 'same-origin',
-                        credentials: 'include'
-                    })
-                    .then(res => {
-                        return res.json();
-                    });
-                    this.infoContent = restaurantInfo['restaurant'];
-                    console.log(this.infoContent);
-                }
             }
         },
+        methods: {
+            search: function(keyword){
+                this.keyword = keyword;
+                const map = this.$refs.map.$mapObject;
+                const bounds = map.getBounds();
+                const data = {
+                    'keyword': keyword,
+                    'north_east_lat': bounds.getNorthEast().lat(),
+                    'north_east_lng': bounds.getNorthEast().lng(),
+                    'south_west_lat': bounds.getSouthWest().lat(),
+                    'south_west_lng': bounds.getSouthWest().lng(),
+                };
+
+                this.markers = [];
+                fetch('/get_coordinate_list', {
+                    method: 'POST',
+                    mode: 'same-origin',
+                    credentials: 'include',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Accept': 'application/json',
+                    },
+                    body: generateFormData(data)
+                })
+                .then(res => {
+                    return res.json();
+                })
+                .then(json => {
+
+                    for (let rest of json['restaurants']) {
+                        this.markers.push({
+                            position: {
+                                lat: rest['latitude'],
+                                lng: rest['longitude'],
+                            },
+                            restaurantId: rest['id'],
+                        })
+                    }
+                    EventBus.$emit('search-restaurant-end', {});
+
+                });
+            },
+            toggleInfoWindow: async function (marker, idx) {
+                this.infoWindowPos = marker.position;
+
+                //check if its the same marker that was selected if yes toggle
+                if (this.currentMidx === idx) {
+                    this.infoWinOpen = !this.infoWinOpen;
+                }
+                //if different marker set infowindow to open and reset current marker index
+                else {
+                    this.infoWinOpen = true;
+                    this.currentMidx = idx;
+                }
+                let restaurantInfo = await fetch('/get_restaurant/' + marker.restaurantId, {
+                    method: 'GET',
+                    mode: 'same-origin',
+                    credentials: 'include'
+                })
+                .then(res => {
+                    return res.json();
+                });
+                this.infoContent = restaurantInfo['restaurant'];
+                console.log(this.infoContent);
+            }
+        }
     }
 
 
