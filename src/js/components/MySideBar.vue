@@ -64,14 +64,12 @@
                 isDisabled: false,
                 searchWord: '',
                 searchMessage: 'Search...',
-            }
-        },
-        methods: {
-            search: function(){
-                console.log(this.searchWord);
-                this.isDisabled = true;
-                this.searchMessage = 'Searching.';
-                EventBus.$emit('search-restaurant', {'keyword': this.searchWord})
+                search: function(){
+                    console.log(this.searchWord);
+                    this.isDisabled = true;
+                    this.searchMessage = 'Searching.';
+                    EventBus.$emit('search-restaurant', {'keyword': this.searchWord})
+                },
             }
         }
     }

@@ -45,12 +45,13 @@
             'restaurant-menu': RestaurantMenu,
         },
         created() {
-            EventBus.$on('search-restaurant', (data)=>{this.search(data.keyword)});
+            EventBus.$on('search-restaurant', (data)=>{
+                this.search(data.keyword);
+            });
         },
         data () {
             return {
                 center: {lat: 35.658581, lng: 139.745433},
-                markers: [],
                 currentMidx: null,
                 infoWinOpen: false,
                 infoContent: '',
@@ -67,6 +68,11 @@
                 keyword: '',
             }
         },
+        computed:{
+           markers: function(){
+               return this.$store.state.markers;
+           }
+        },
         methods: {
             search: function(keyword){
                 this.keyword = keyword;
@@ -79,35 +85,10 @@
                     'south_west_lat': bounds.getSouthWest().lat(),
                     'south_west_lng': bounds.getSouthWest().lng(),
                 };
-
-                this.markers = [];
-                fetch('/get_coordinate_list', {
-                    method: 'POST',
-                    mode: 'same-origin',
-                    credentials: 'include',
-                    headers: {
-                        'X-CSRFToken': getCookie('csrftoken'),
-                        'Accept': 'application/json',
-                    },
-                    body: generateFormData(data)
-                })
-                .then(res => {
-                    return res.json();
-                })
-                .then(json => {
-
-                    for (let rest of json['restaurants']) {
-                        this.markers.push({
-                            position: {
-                                lat: rest['latitude'],
-                                lng: rest['longitude'],
-                            },
-                            restaurantId: rest['id'],
-                        })
-                    }
-                    EventBus.$emit('search-restaurant-end', {});
-
+                this.$store.dispatch('search', data).then(d => {
+                    EventBus.$emit('search-restaurant-end');
                 });
+
             },
             toggleInfoWindow: async function (marker, idx) {
                 this.infoWindowPos = marker.position;
@@ -130,7 +111,6 @@
                     return res.json();
                 });
                 this.infoContent = restaurantInfo['restaurant'];
-                console.log(this.infoContent);
             }
         }
     }
