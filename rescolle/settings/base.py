@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'rescolle_view.sns_restaurant',
     'rescolle_view.crawl_raw_data',
     'rescolle_view.unified_restaurant',
-    'rescolle_view.tag'
+    'rescolle_view.tag',
+    'rescolle_view.collection',
 
 ]
 
