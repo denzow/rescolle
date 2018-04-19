@@ -58,7 +58,6 @@ def generate_restaurant_endpoint(request, json_serial):
     :param json_serial:
     :return:
     """
-
     def _async(target_crawled_data):
         logger.info('generate run')
         sns_res_sv.generate_restaurant_data(target_crawled_data.json, target_crawled_data.source_type)
