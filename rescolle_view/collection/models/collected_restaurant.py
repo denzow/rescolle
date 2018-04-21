@@ -25,6 +25,10 @@ class CollectedRestaurant(models.Model):
         except cls.DoesNotExist:
             return None
 
+    @classmethod
+    def get_list_by_collection_id(cls, collection_id):
+        return list(cls.objects.filter(collection_id=collection_id).order_by('order', 'id'))
+
     def to_dict(self):
         return {
             'restaurtant_id': self.restaurant_id,

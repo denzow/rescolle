@@ -48,3 +48,12 @@ def get_collection(collection_id):
     :rtype: Collection or None
     """
     return Collection.get_by_id(collection_id=collection_id)
+
+
+def get_collected_restaurant_by_collection_id(collection_id):
+    """
+    :param int collection_id:
+    :return:
+    :rtype: list[CollectedRestaurant]
+    """
+    return CollectedRestaurant.get_list_by_collection_id(collection_id)

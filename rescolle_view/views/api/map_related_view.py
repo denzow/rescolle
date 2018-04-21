@@ -50,6 +50,14 @@ def get_coordinate_list(request):
     })
 
 
+def get_coordinate_list_from_collection_id(request, collection_id):
+    restaurant_coordinate_list = ur_sv.get_restaurant_coordinate_list_by_collection_id(collection_id)
+    return JsonResponse({
+        'restaurants': restaurant_coordinate_list,
+        'center': ur_sv.get_center_position(restaurant_coordinate_list),
+    })
+
+
 def generate_restaurant_endpoint(request, json_serial):
     """
     クローラから叩かれるエンドポイント

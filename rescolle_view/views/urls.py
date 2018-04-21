@@ -16,6 +16,7 @@ urlpatterns = [
     path('logout', views.logout_view),
 
     path('get_coordinate_list', map_related_view.get_coordinate_list),
+    path('get_coordinate_list/<int:collection_id>', map_related_view.get_coordinate_list_from_collection_id),
     path('get_restaurant/<int:restaurant_id>', map_related_view.get_restaurant),
 
     # related collection

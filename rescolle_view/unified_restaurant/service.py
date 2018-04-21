@@ -3,9 +3,27 @@ from statistics import mean
 from .models import UnifiedRestaurant
 from .components import unified_restaurant_image_url as image_cmpt
 from rescolle_view.tag import service as tag_sv
+from rescolle_view.collection import service as collection_sv
 
 
-def get_restaurant_coordinate_list_by_keyword(keyword: str, north_east_lat=None, north_east_lng=None, south_west_lat=None, south_west_lng=None) -> list:
+def get_restaurant_coordinate_list_by_collection_id(collection_id):
+    """
+    :param int collection_id:
+    :return:
+    :rtype: list[dict]
+    """
+    restaurant_list_id = [x.restaurant.id for x in
+                          collection_sv.get_collected_restaurant_by_collection_id(collection_id)
+                          ]
+    restaurant_list = UnifiedRestaurant.get_list_by_id_list(id_list=restaurant_list_id)
+    return [
+        {'id': x.id, 'latitude': x.latitude, 'longitude': x.longitude, 'name': x.name}
+        for x in restaurant_list
+    ]
+
+
+def get_restaurant_coordinate_list_by_keyword(keyword: str, north_east_lat=None, north_east_lng=None,
+                                              south_west_lat=None, south_west_lng=None) -> list:
     """
     指定座標内のキーワードを含んだレストランの座標のリストを取得する
     :param keyword:

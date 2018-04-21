@@ -26,10 +26,11 @@ class Collection(models.Model):
 
     @classmethod
     def get_list_by_owner_id(cls, owner_id):
-        return cls.objects.filter(owner_id=owner_id).order_by('order')
+        return list(cls.objects.filter(owner_id=owner_id).order_by('order'))
 
     def to_dict(self):
         return {
+            'id': self.id,
             'name': self.name,
             'description': self.description,
             'restaurants': [res.to_dict() for res in self.collectedrestaurant_set.all().order_by('order')]

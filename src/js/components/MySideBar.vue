@@ -15,10 +15,9 @@
       </form>
       <ul class="sidebar-menu tree" data-widget="tree">
         <li class="header">コレクションリスト</li>
-        <restaurant-collection v-for="(collection, index) in collectionList" :collection="collection"/>
+        <restaurant-collection v-for="(collection, index) in collectionList" :collection="collection" />
       </ul>
     </section>
-    <!-- /.sidebar -->
   </aside>
 </template>
 
