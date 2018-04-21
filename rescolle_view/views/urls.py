@@ -18,6 +18,8 @@ urlpatterns = [
     path('get_coordinate_list', map_related_view.get_coordinate_list),
     path('get_restaurant/<int:restaurant_id>', map_related_view.get_restaurant),
 
+    # related collection
+    path('get_collection_list/', login_required(collection_related_view.get_collection_list)),
     path('create_collection/', login_required(collection_related_view.create_collection)),
     path('add_restaurant_to_collection/', login_required(collection_related_view.add_restaurant_to_collection)),
 
