@@ -13,34 +13,9 @@
           </span>
         </div>
       </form>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu tree" data-widget="tree">
         <li class="header">コレクションリスト</li>
-        <li class="active treeview menu-open">
-          <a href="#">
-            <i class="fa fa-folder"></i> <span>れすこれリスト</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="index.html"><i class="fa fa-cutlery"></i> 牛角 </a></li>
-            <li class="active"><a href="index2.html"><i class="fa fa-cutlery"></i>ハンバーガー</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-folder"></i> <span>れすこれリスト</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="index.html"><i class="fa fa-circle-o"></i> 牛角 </a></li>
-            <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i>ハンバーガー</a></li>
-          </ul>
-        </li>
+        <restaurant-collection v-for="(collection, index) in collectionList" :collection="collection"/>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -49,28 +24,38 @@
 
 <script>
 
-    import EventBus from '../eventbus/EventBus';
+  import EventBus from '../eventbus/EventBus';
+  import RestaurantCollection from './RestaurantCollection.vue';
 
-    export default {
-        name: 'MySideBar',
-        created() {
-            EventBus.$on('search-restaurant-end', (data)=>{
-                this.isDisabled = false;
-                this.searchMessage = 'Search...'
-            });
+  export default {
+    name: 'MySideBar',
+    created() {
+      EventBus.$on('search-restaurant-end', (data)=>{
+        this.isDisabled = false;
+        this.searchMessage = 'Search...'
+      });
+      this.$store.dispatch('initCollection');
+    },
+    components:{
+      RestaurantCollection
+    },
+    data() {
+      return {
+        isDisabled: false,
+        searchWord: '',
+        searchMessage: 'Search...',
+        search: function(){
+          console.log(this.searchWord);
+          this.isDisabled = true;
+          this.searchMessage = 'Searching.';
+          EventBus.$emit('search-restaurant', {'keyword': this.searchWord})
         },
-        data() {
-            return {
-                isDisabled: false,
-                searchWord: '',
-                searchMessage: 'Search...',
-                search: function(){
-                    console.log(this.searchWord);
-                    this.isDisabled = true;
-                    this.searchMessage = 'Searching.';
-                    EventBus.$emit('search-restaurant', {'keyword': this.searchWord})
-                },
-            }
-        }
-    }
+      }
+    },
+    computed: {
+      collectionList(){
+          return this.$store.state.collectionList;
+      }
+    },
+  }
 </script>
