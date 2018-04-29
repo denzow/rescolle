@@ -4,6 +4,8 @@ import Vuex from 'vuex';
 import {
   getCookie,
   generateFormData,
+  getJson,
+  postJson,
 } from '../lib/utils';
 
 
@@ -23,68 +25,7 @@ const actions = {
   },
   search(context, payload) {
     let markers = [];
-    fetch('/get_coordinate_list', {
-      method: 'POST',
-      mode: 'same-origin',
-      credentials: 'include',
-      headers: {
-        'X-CSRFToken': getCookie('csrftoken'),
-        'Accept': 'application/json',
-      },
-      body: generateFormData(payload)
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        for (let rest of json['restaurants']) {
-          markers.push({
-            position: {
-              lat: rest['latitude'],
-              lng: rest['longitude'],
-            },
-            restaurantId: rest['id'],
-          })
-        }
-        context.commit('setMarkers', {markers})
-      });
-  },
-  setSearchWord(context, payload) {
-    context.commit('setSearchWord', payload)
-  },
-  initCollection(context, payload){
-    console.log('initCollection');
-    fetch('/get_collection_list', {
-      method: 'GET',
-      mode: 'same-origin',
-      credentials: 'include',
-      headers: {
-        'X-CSRFToken': getCookie('csrftoken'),
-        'Accept': 'application/json',
-      },
-    })
-    .then(res => {
-      return res.json();
-    })
-    .then(json => {
-      context.commit('setCollection', json)
-    });
-  },
-  setCollectionToMark(context, payload){
-    const collectionId = payload.collectionId;
-    const markers = [];
-    fetch(`/get_coordinate_list/${collectionId}`, {
-      method: 'GET',
-      mode: 'same-origin',
-      credentials: 'include',
-      headers: {
-        'X-CSRFToken': getCookie('csrftoken'),
-        'Accept': 'application/json',
-      },
-    })
-    .then(res => {
-      return res.json();
-    })
+    postJson('/get_coordinate_list', payload)
     .then(json => {
       for (let rest of json['restaurants']) {
         markers.push({
@@ -95,8 +36,35 @@ const actions = {
           restaurantId: rest['id'],
         })
       }
-      context.commit('setCollectedMarkers', {markers});
+      context.commit('setMarkers', {markers})
     });
+  },
+  setSearchWord(context, payload) {
+    context.commit('setSearchWord', payload)
+  },
+  initCollection(context){
+    console.log('initCollection');
+    getJson('/get_collection_list')
+      .then(json => {
+        context.commit('setCollection', json)
+      });
+  },
+  setCollectionToMark(context, payload){
+    const collectionId = payload.collectionId;
+    const markers = [];
+    getJson(`/get_coordinate_list/${collectionId}`)
+      .then(json => {
+        for (let rest of json['restaurants']) {
+          markers.push({
+            position: {
+              lat: rest['latitude'],
+              lng: rest['longitude'],
+            },
+            restaurantId: rest['id'],
+          })
+        }
+        context.commit('setCollectedMarkers', {markers});
+      });
   }
 };
 const mutations = {

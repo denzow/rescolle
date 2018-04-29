@@ -17,3 +17,35 @@ export function getCookie(c_name) {
 export function generateFormData(obj) {
   return Object.keys(obj).reduce((o, key) => (o.set(key, obj[key]), o), new FormData());
 }
+
+
+export function getJson(url){
+  return fetch(url, {
+      method: 'GET',
+      mode: 'same-origin',
+      credentials: 'include',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Accept': 'application/json',
+      },
+    })
+    .then(res => {
+      return res.json();
+    })
+}
+
+export function postJson(url, data){
+  return fetch(url, {
+    method: 'POST',
+    mode: 'same-origin',
+    credentials: 'include',
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken'),
+      'Accept': 'application/json',
+    },
+    body: generateFormData(data)
+  })
+  .then(res => {
+    return res.json();
+  })
+}
