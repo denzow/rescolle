@@ -13,6 +13,7 @@ export default new Vuex.Store({
   state: {
     searchWord: '',
     markers: [],
+    collectedMarkers: [],
     collectionList: [],
   },
   actions: {
@@ -95,7 +96,7 @@ export default new Vuex.Store({
               restaurantId: rest['id'],
             })
           }
-          context.commit('setMarkers', {markers});
+          context.commit('setCollectedMarkers', {markers});
       });
     }
   },
@@ -108,6 +109,9 @@ export default new Vuex.Store({
     },
     setCollection(state, payload) {
       state.collectionList = payload.collection_list;
+    },
+    setCollectedMarkers(state, payload){
+      state.collectedMarkers = payload.markers;
     }
   },
 });
