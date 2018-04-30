@@ -8,7 +8,7 @@
     </a>
     <ul class="treeview-menu">
       <li v-for="(restaurant, index) in restaurantList" :key="restaurant.id" class="collected-restaurant">
-        <a href="#" >
+        <a href="#">
           <i class="fa fa-cutlery"></i>{{ restaurant.restaurant_name }}
         </a>
       </li>
@@ -21,18 +21,18 @@
       'collection',
     ],
     computed:{
-      restaurantList(){
+      restaurantList() {
         console.log(this.collection.id);
         return this.collection.restaurants;
       }
     },
     methods:{
-      setCollectionToMark(){
+      setCollectionToMark() {
         console.log('setCollectionToMark');
         this.$store.dispatch('setCollectionToMark', {
           collectionId: this.collection.id
         });
-      }
+      },
     },
   }
 </script>

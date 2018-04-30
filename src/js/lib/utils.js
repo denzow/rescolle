@@ -34,7 +34,13 @@ export function getJson(url){
     })
 }
 
-export function postJson(url, data){
+export function postJson(url, data, type='form'){
+  let body = '';
+  if (type === 'json'){
+    body = JSON.stringify(data);
+  }else{
+    body = generateFormData(data);
+  }
   return fetch(url, {
     method: 'POST',
     mode: 'same-origin',
@@ -43,7 +49,7 @@ export function postJson(url, data){
       'X-CSRFToken': getCookie('csrftoken'),
       'Accept': 'application/json',
     },
-    body: generateFormData(data)
+    body: body,
   })
   .then(res => {
     return res.json();

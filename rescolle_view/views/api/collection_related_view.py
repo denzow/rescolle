@@ -20,6 +20,7 @@ def add_restaurant_to_collection(request):
     data = json.loads(request.body)
 
     collection = collection_sv.get_collection(data['collection_id'])
+    # 所有者チェック
     if collection.owner_id != user_id:
         return HttpResponse({'error': True}, status=500)
 

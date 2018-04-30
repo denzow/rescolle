@@ -2,8 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import {
-  getCookie,
-  generateFormData,
   getJson,
   postJson,
 } from '../lib/utils';
@@ -19,7 +17,27 @@ const state = {
   collectionList: [],
 };
 
+const getters = {
+  getCollectionListForSelect(state, getters) {
+    return state.collectionList.map(collection => {
+      return {
+        id: collection.id,
+        name: collection.name,
+      }
+    })
+  },
+};
+
 const actions = {
+  async addCollection(context, payload){
+    await postJson('add_restaurant_to_collection/', {
+      collection_id: payload.collectionId,
+      restaurant_id: payload.restaurantId,
+      memo: payload.memo,
+    }, 'json');
+
+    context.dispatch('initCollection');
+  },
   setMarkers(context, payload) {
     context.commit('setMarkers', payload);
   },
@@ -85,6 +103,7 @@ const mutations = {
 
 export default new Vuex.Store({
   state,
+  getters,
   actions,
   mutations,
 });

@@ -1,40 +1,40 @@
 <template>
-    <div>
-        <gmap-map
-                ref="map"
-                :center="center"
-                :zoom="14"
-                @click="closeInfoWindow"
-                style="width: 90%; height: 700px">
-            <gmap-marker
-                    :key="`search_${index}`"
-                    v-for="(m, index) in markers"
-                    :position="m.position"
-                    :clickable="true"
-                    :draggable="false"
-                    @click="toggleInfoWindow(m, index)">
-            </gmap-marker>
+  <div>
+    <gmap-map
+      ref="map"
+      :center="center"
+      :zoom="14"
+      @click="closeInfoWindow"
+      style="width: 90%; height: 700px">
+      <gmap-marker
+        :key="`search_${index}`"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        :clickable="true"
+        :draggable="false"
+        @click="toggleInfoWindow(m, index)">
+      </gmap-marker>
 
-            <gmap-marker
-                    :key="`cl_${index}`"
-                    v-for="(m, index) in collectedMarkers"
-                    :position="m.position"
-                    :clickable="true"
-                    :draggable="false"
-                    :icon="{'url': 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'}"
-                    @click="toggleInfoWindow(m, index)">
-            </gmap-marker>
+      <gmap-marker
+        :key="`cl_${index}`"
+        v-for="(m, index) in collectedMarkers"
+        :position="m.position"
+        :clickable="true"
+        :draggable="false"
+        :icon="{'url': 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'}"
+        @click="toggleInfoWindow(m, index)">
+      </gmap-marker>
 
-            <gmap-info-window
-                    :options="infoOptions"
-                    :position="infoWindowPos"
-                    :opened="infoWinOpen"
-                    @closeclick="closeInfoWindow">
-                <my-maker :restaurantInfo="infoContent"></my-maker>
-            </gmap-info-window>
-        </gmap-map>
-        <restaurant-menu :restaurantInfo="infoContent"></restaurant-menu>
-    </div>
+      <gmap-info-window
+        :options="infoOptions"
+        :position="infoWindowPos"
+        :opened="infoWinOpen"
+        @closeclick="closeInfoWindow">
+        <my-maker :restaurantInfo="infoContent"></my-maker>
+      </gmap-info-window>
+    </gmap-map>
+    <restaurant-menu :restaurantInfo="infoContent"></restaurant-menu>
+  </div>
 </template>
 
 <script>
@@ -47,6 +47,7 @@
   import {
     getCookie,
     generateFormData,
+    getJson,
   } from '../lib/utils';
 
 
@@ -116,23 +117,13 @@
       toggleInfoWindow: async function (marker, idx) {
         this.infoWindowPos = marker.position;
 
-        //check if its the same marker that was selected if yes toggle
         if (this.currentMidx === idx) {
           this.infoWinOpen = !this.infoWinOpen;
-        }
-        //if different marker set infowindow to open and reset current marker index
-        else {
+        }else {
           this.infoWinOpen = true;
           this.currentMidx = idx;
         }
-        let restaurantInfo = await fetch('/get_restaurant/' + marker.restaurantId, {
-          method: 'GET',
-          mode: 'same-origin',
-          credentials: 'include'
-        })
-          .then(res => {
-            return res.json();
-          });
+        let restaurantInfo = await getJson('/get_restaurant/' + marker.restaurantId);
         this.infoContent = restaurantInfo['restaurant'];
       },
       closeInfoWindow() {

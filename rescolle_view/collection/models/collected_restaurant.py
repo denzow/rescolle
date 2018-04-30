@@ -10,7 +10,10 @@ class CollectedRestaurant(models.Model):
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
+    class Meta:
+        unique_together = ('collection', 'restaurant')
+
     def __str__(self):
         return 'CollectedRestaurant({} in {})'.format(self.restaurant, self.collection)
 
